@@ -1,27 +1,26 @@
-# Explorer Template
+# FlappyBug
+FlappyBug is Geeky Multiplayer version of the classic FlappyBird Game.
 
-This is a template to help you get started with your projects. Find out more information inside of the Fello Handbook.
+# Contribution:
+We're open to contributions!
+## Test Locally
+- Clone the repository and checkout to the directory by running:
+```sh
+$ git clone https://github.com/amalaabraham/flappybug-sprint1
 
-This template has a `main` and `staging` branch already setup. 
-
-- Code will only be merged into `main` once your Pod Leader has reviewed your code. 
-- During the week, you'll merge code into `staging`.
-
-## Useful commands
-
-Switch branches:
+$ cd flappybug-sprint1
 ```
-git checkout <branch-name>
+- Create a local server, you can use npm's `http-server`.
+Make sure you have `npm` installed, once then.
+
+Install `http-server` by running:
+```sh
+$ npm install -g http-server
 ```
 
-Make new branch and switch to it:
-```
-git checkout -b <branch-name>
+- Start an http server by simply running:
+```sh
+$ http-server
 ```
 
-I'd recommend using the GitHub CLI for reviewing Pull Requests, making Pull Requests and making Issues.
-
-Download it with Homebrew:
-```
-brew install gh
-```
+- Open one of the output URLs in your browser.
