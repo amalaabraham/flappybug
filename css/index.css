@@ -1,0 +1,36 @@
+
+nav{
+    padding: 0 0 15px 15px;
+    margin-left: 5px;
+    box-shadow: 0px 3px 5px #23aaee;
+}
+
+#nav-icon{
+    width: 50px;
+    height: 50px;
+    margin-right: 5px;
+    float: left;
+}
+
+.nav-fb{
+    font-family: 'Montserrat';
+    font-size: 25px;
+    font-weight: bolder;
+}
+
+#nav-flappy{
+    color: rgb(41, 88, 175);
+}
+
+#nav-bug{
+    color: red;
+}
+
+.nav-fb-holder{
+    padding-top: 10px;
+}
+canvas{
+    position: absolute;
+    top: 15%;
+    left: 15%;
+}
