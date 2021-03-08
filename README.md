@@ -10,17 +10,14 @@ $ git clone https://github.com/amalaabraham/flappybug-sprint1
 
 $ cd flappybug-sprint1
 ```
-- Create a local server, you can use npm's `http-server`.
-Make sure you have `npm` installed, once then.
+Make sure you have `npm` and `node` installed.
+- Install the dependencies by running:
 
-Install `http-server` by running:
 ```sh
-$ npm install -g http-server
+$ npm install
 ```
 
-- Start an http server by simply running:
+- Start the local server:
 ```sh
-$ http-server
+$ npm start
 ```
-
-- Open one of the output URLs in your browser.
