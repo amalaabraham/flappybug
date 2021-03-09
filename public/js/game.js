@@ -1,11 +1,17 @@
+var doDebug = false;
 
 $( () => {
+    
+    let DEBUG = (err) => {
+        if(doDebug)
+            console.log(err);
+    };
 
     let gameHeight = Math.floor( $(document).height() * .8 );
     let gameWidth = Math.floor( $(document).width() * .8 );
 
-    console.log(`game width = ${gameWidth}`);
-    console.log(`game height = ${gameHeight}`);
+    DEBUG(`game width = ${gameWidth}`);
+    DEBUG(`game height = ${gameHeight}`);
 
 
     var config = {
