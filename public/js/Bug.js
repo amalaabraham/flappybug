@@ -62,8 +62,4 @@ class Bug {
             this.jump()
 
     }
-
-    keyDown(player)
-    {
-    }
 }
