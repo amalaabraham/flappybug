@@ -1,21 +1,26 @@
+@import url('http://fonts.cdnfonts.com/css/southside');
 
+body{
+    background-color: #1a1a1a;
+}
 
 nav{
     padding: 0 0 15px 15px;
     margin-left: 5px;
-    box-shadow: 0px 3px 5px #23aaee;
+    border-bottom: 1px white groove;
 }
 
 #nav-icon{
-    width: 50px;
-    height: 50px;
-    margin-right: 5px;
+    width: 70px;
+    height: 70px;
+    margin: -10px 0 0 0;
     float: left;
 }
 
 .nav-fb{
-    font-family: 'Montserrat';
-    font-size: 25px;
+    font-family: 'SOUTHSIDE', sans-serif;
+    letter-spacing: 4px;
+    font-size: 28px;
     font-weight: bolder;
 }
 
@@ -24,7 +29,7 @@ nav{
 }
 
 #nav-bug{
-    color: red;
+    color: white;
 }
 
 .nav-fb-holder{
@@ -34,4 +39,6 @@ canvas{
     position: absolute;
     top: 10%; /* gameWindow is set to 80% */
     left: 10%;
+    box-shadow: 0px 3px 5px #23aaee;
+
 }

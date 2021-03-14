@@ -6,7 +6,7 @@ class Bug {
         this.gameWidth = gameWidth
         this.gameHeight = gameHeight
         this.player = null;
-
+        
         this.jumpVelocity = -400
         this.gravityVelocity = 200
         this.gravityAngularVelocity = 80
