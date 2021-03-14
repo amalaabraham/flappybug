@@ -1,14 +1,14 @@
-class Menu extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
     constructor() {
-        super('Menu');
+        super('GameScene');
 
         this.tilesets = null;
 
-        this.tileLayer = null;
-        this.objLayer = null;
-
-        this.objLayerObjects = []
+        this.tileLayer = null; // Tile Layer includes ground and Background Image
+        this.objLayer = null; // Json array includes all objects except player
+        this.objLayerObjects = [] // include all physical objects
+        this.envSpeed = 3 // Background moving speed
 
     }
 
@@ -91,10 +91,10 @@ class Menu extends Phaser.Scene {
 
     update()
     {
-        this.tileLayer.x -= 2;
+        this.tileLayer.x -= this.envSpeed;
 
         this.objLayerObjects.forEach( obj => {
-            obj.x -= 2;
+            obj.x -= this.envSpeed;
         })
 
     }

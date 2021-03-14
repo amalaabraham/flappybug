@@ -26,7 +26,7 @@ $(() => {
                 gravity: { y: 0 }
             }
         },
-        scene: [Menu,],
+        scene: [GameScene,],
     }
 
     game = new Phaser.Game(config);
