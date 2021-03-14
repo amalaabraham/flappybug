@@ -7,8 +7,8 @@ class Bug {
         this.gameHeight = gameHeight
         this.player = null;
 
-        this.jumpVelocity = -500
-        this.gravityVelocity = 300
+        this.jumpVelocity = -400
+        this.gravityVelocity = 200
         this.gravityAngularVelocity = 80
         this.isJumping = false
     }
@@ -53,7 +53,7 @@ class Bug {
         if(this.player.body.rotation < -50)
             this.player.body.angularVelocity = this.gravityAngularVelocity
 
-        if(this.player.body.rotation > 50)
+        if(this.player.body.rotation > 75)
             this.player.body.angularVelocity = 0
 
         var pointer = this.scene.input.activePointer
