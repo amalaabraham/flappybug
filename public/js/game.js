@@ -1,4 +1,5 @@
 var doDebug = false;
+var gameHeight, gameWidth;
 
 var DEBUG = (err) => {
     if (doDebug)
@@ -7,8 +8,8 @@ var DEBUG = (err) => {
 
 $(() => {
 
-    let gameHeight = Math.floor($(document).height() * .8);
-    let gameWidth = Math.floor($(document).width() * .8);
+    gameHeight = Math.floor($(document).height() * .8);
+    gameWidth = Math.floor($(document).width() * .8);
 
     DEBUG(`game width = ${gameWidth}`);
     DEBUG(`game height = ${gameHeight}`);

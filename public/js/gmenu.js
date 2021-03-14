@@ -57,16 +57,17 @@ class Menu extends Phaser.Scene {
         const groundLayer = map.addTilesetImage('Ground_02')
         const bgLayer = map.addTilesetImage('background')
 
-        map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(1.1);
-
+        let tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
 
         let objLayer = map.getObjectLayer('Object Layer 1')['objects'];
+        console.log(objLayer)
 
         const objs = this.physics.add.staticGroup()
         objLayer.forEach(object => {
             let obj = objs.create(object.x, object.y, this.getObjPropertyFromGid(object.gid, 'name'));
-            if (this.getObjPropertyFromGid(object.gid, 'name') == 'Grass_01')
-                obj.setOrigin(0)
+            obj.setScale(0.79)
+            obj.setX( Math.round(object.x * 0.79))
+            obj.setY( Math.round(object.y * 0.79))
 
         });
     }
