@@ -10,6 +10,8 @@ class GameScene extends Phaser.Scene {
         this.objLayerObjects = [] // include all physical objects
         this.envSpeed = 3 // Background moving speed
 
+        this.bug = null // Bug Player
+
     }
 
     getObjPropertyFromGid(gid, prop) {
@@ -79,14 +81,13 @@ class GameScene extends Phaser.Scene {
 
         // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
 
-        let bug = new Bug(this, gameWidth, gameHeight)
-        bug.render()
-        bug.player.setScale(1.2)
+        this.bug = new Bug(this, gameWidth, gameHeight)
+        this.bug.render()
+        this.bug.player.setScale(1.2)
+
 
         // player.body.velocity.y = 150
         // player.body.velocity.x = 150
-
-
     }
 
     update()
@@ -96,6 +97,11 @@ class GameScene extends Phaser.Scene {
         this.objLayerObjects.forEach( obj => {
             obj.x -= this.envSpeed;
         })
+
+
+        // if(this.cursors.left.isDown) {
+        //     this.bug.player.body.velocity.y = 3;
+        //  }
 
     }
 
