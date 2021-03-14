@@ -1,15 +1,18 @@
+var sceneConfig = {
+    envSpeed: 3,
+}
+
 class GameScene extends Phaser.Scene {
 
     constructor() {
         super('GameScene');
 
         this.tilesets = null;
-
         this.tileLayer = null; // Tile Layer includes ground and Background Image
         this.objLayer = null; // Json array includes all objects except player
         this.objLayerObjects = [] // include all physical objects
-        this.envSpeed = 3 // Background moving speed
-
+        this.envSpeed = 0 // Background moving speed
+        this.hasGameStarted = false // Game Started?
         this.bug = null // Bug Player
 
     }
@@ -79,14 +82,13 @@ class GameScene extends Phaser.Scene {
             this.objLayerObjects.push(obj)
         });
 
-        // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
-
         this.bug = new Bug(this, gameWidth, gameHeight).render()
         this.bug.player.setScale(1.2)
 
+        this.input.keyboard.on('keydown-SPACE', ev => { 
+            this.startGame()
+        });
 
-        // player.body.velocity.y = 150
-        // player.body.velocity.x = 150
     }
 
     update()
@@ -97,13 +99,16 @@ class GameScene extends Phaser.Scene {
             obj.x -= this.envSpeed;
         })
 
-        this.bug.update()
+        if(this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
+            this.startGame()
 
-        // if(this.cursors.left.isDown) {
-        //     this.bug.player.body.velocity.y = 3;
-        //  }
+        this.bug.update() // update bug
 
     }
 
-
+    startGame()
+    {
+        this.bug.startGame()
+        this.envSpeed = sceneConfig.envSpeed
+    }
 }

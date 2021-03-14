@@ -6,7 +6,8 @@ class Bug {
         this.gameWidth = gameWidth
         this.gameHeight = gameHeight
         this.player = null;
-        
+        this.hasGameStarted = false
+
         this.jumpVelocity = -400
         this.gravityVelocity = 200
         this.gravityAngularVelocity = 80
@@ -15,11 +16,15 @@ class Bug {
 
     render()
     {
-        this.player = this.scene.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
-        console.log(this.player)
+        this.player = this.scene.physics.add.sprite(Math.floor(gameWidth / 5), Math.floor(gameHeight / 2), 'bug');
+        return this;
+    }
+
+    startGame()
+    {
+        this.hasGameStarted = true
         this.initPlayer()
         this.setListeners()
-        return this;
     }
 
     initPlayer()
@@ -50,6 +55,9 @@ class Bug {
 
     update()
     {
+        if(this.hasGameStarted == false)
+            return
+
         if(this.player.body.rotation < -50)
             this.player.body.angularVelocity = this.gravityAngularVelocity
 
