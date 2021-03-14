@@ -42,9 +42,10 @@ class Bug {
     }
     setListeners()
     {
-        this.scene.input.keyboard.on('keydown', ev => { 
+        this.scene.input.keyboard.on('keydown-SPACE', ev => { 
             this.jump()
         });
+
     }
 
     update()
@@ -55,7 +56,10 @@ class Bug {
         if(this.player.body.rotation > 50)
             this.player.body.angularVelocity = 0
 
-    
+        var pointer = this.scene.input.activePointer
+
+        if(pointer.leftButtonDown())
+            this.jump()
 
     }
 
