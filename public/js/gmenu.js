@@ -4,6 +4,12 @@ class Menu extends Phaser.Scene {
         super('Menu');
 
         this.tilesets = null;
+
+        this.tileLayer = null;
+        this.objLayer = null;
+
+        this.objLayerObjects = []
+
     }
 
     getObjPropertyFromGid(gid, prop) {
@@ -47,6 +53,8 @@ class Menu extends Phaser.Scene {
             this.load.image(obj.name, obj.image)
         }
 
+        this.load.image('bug', '..\/game\/assets\/fbug_01.png')
+
     }
 
     create() {
@@ -56,19 +64,39 @@ class Menu extends Phaser.Scene {
         const groundLayer = map.addTilesetImage('Ground_02')
         const bgLayer = map.addTilesetImage('background')
 
-        let tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
-
-        let objLayer = map.getObjectLayer('Object Layer 1')['objects'];
-        DEBUG(objLayer)
+        this.tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
+        this.objLayer = map.getObjectLayer('Object Layer 1')['objects'];
 
         const objs = this.physics.add.staticGroup()
-        objLayer.forEach(object => {
+        this.objLayer.forEach(object => {
             let obj = objs.create(object.x, object.y, this.getObjPropertyFromGid(object.gid, 'name'));
             obj.setScale(0.79)
             obj.setX( Math.round(object.x * 0.79))
             obj.setY( Math.round(object.y * 0.79))
 
+            this.objLayerObjects.push(obj)
         });
+
+        console.log(this.objLayerObjects)
+        var player = this.physics.add.sprite(20, 20, 'bug');
+
+        player.setBounce(0.2)
+        player.setScale(1.2)
+
+        // player.body.velocity.y = 150
+        // player.body.velocity.x = 150
+
+
+    }
+
+    update()
+    {
+        this.tileLayer.x -= 2;
+
+        this.objLayerObjects.forEach( obj => {
+            obj.x -= 2;
+        })
+
     }
 
 
