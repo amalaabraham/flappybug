@@ -1,7 +1,4 @@
 class Menu extends Phaser.Scene {
-  constructor() {
-    super("Menu");
-  }
 
     constructor() {
         super('Menu');
@@ -62,7 +59,7 @@ class Menu extends Phaser.Scene {
         let tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
 
         let objLayer = map.getObjectLayer('Object Layer 1')['objects'];
-        console.log(objLayer)
+        DEBUG(objLayer)
 
         const objs = this.physics.add.staticGroup()
         objLayer.forEach(object => {
