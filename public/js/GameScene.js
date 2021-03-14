@@ -77,11 +77,11 @@ class GameScene extends Phaser.Scene {
             this.objLayerObjects.push(obj)
         });
 
-        console.log(this.objLayerObjects)
-        var player = this.physics.add.sprite(20, 20, 'bug');
+        // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
 
-        player.setBounce(0.2)
-        player.setScale(1.2)
+        let bug = new Bug(this, gameWidth, gameHeight)
+        bug.render()
+        bug.player.setScale(1.2)
 
         // player.body.velocity.y = 150
         // player.body.velocity.x = 150
