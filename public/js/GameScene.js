@@ -1,9 +1,17 @@
-class Menu extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
 
     constructor() {
-        super('Menu');
+        super('GameScene');
 
         this.tilesets = null;
+
+        this.tileLayer = null; // Tile Layer includes ground and Background Image
+        this.objLayer = null; // Json array includes all objects except player
+        this.objLayerObjects = [] // include all physical objects
+        this.envSpeed = 3 // Background moving speed
+
+        this.bug = null // Bug Player
+
     }
 
     getObjPropertyFromGid(gid, prop) {
@@ -47,6 +55,8 @@ class Menu extends Phaser.Scene {
             this.load.image(obj.name, obj.image)
         }
 
+        this.load.image('bug', '..\/game\/assets\/fbug_01.png')
+
     }
 
     create() {
@@ -56,19 +66,43 @@ class Menu extends Phaser.Scene {
         const groundLayer = map.addTilesetImage('Ground_02')
         const bgLayer = map.addTilesetImage('background')
 
-        let tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
-
-        let objLayer = map.getObjectLayer('Object Layer 1')['objects'];
-        DEBUG(objLayer)
+        this.tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
+        this.objLayer = map.getObjectLayer('Object Layer 1')['objects'];
 
         const objs = this.physics.add.staticGroup()
-        objLayer.forEach(object => {
+        this.objLayer.forEach(object => {
             let obj = objs.create(object.x, object.y, this.getObjPropertyFromGid(object.gid, 'name'));
             obj.setScale(0.79)
             obj.setX( Math.round(object.x * 0.79))
             obj.setY( Math.round(object.y * 0.79))
 
+            this.objLayerObjects.push(obj)
         });
+
+        // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
+
+        this.bug = new Bug(this, gameWidth, gameHeight)
+        this.bug.render()
+        this.bug.player.setScale(1.2)
+
+
+        // player.body.velocity.y = 150
+        // player.body.velocity.x = 150
+    }
+
+    update()
+    {
+        this.tileLayer.x -= this.envSpeed;
+
+        this.objLayerObjects.forEach( obj => {
+            obj.x -= this.envSpeed;
+        })
+
+
+        // if(this.cursors.left.isDown) {
+        //     this.bug.player.body.velocity.y = 3;
+        //  }
+
     }
 
 
