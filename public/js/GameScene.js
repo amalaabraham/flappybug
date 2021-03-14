@@ -81,8 +81,7 @@ class GameScene extends Phaser.Scene {
 
         // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
 
-        this.bug = new Bug(this, gameWidth, gameHeight)
-        this.bug.render()
+        this.bug = new Bug(this, gameWidth, gameHeight).render()
         this.bug.player.setScale(1.2)
 
 
@@ -98,6 +97,7 @@ class GameScene extends Phaser.Scene {
             obj.x -= this.envSpeed;
         })
 
+        this.bug.update()
 
         // if(this.cursors.left.isDown) {
         //     this.bug.player.body.velocity.y = 3;
