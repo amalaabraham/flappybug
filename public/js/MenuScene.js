@@ -1,4 +1,4 @@
-export class MenuScene2 extends Phaser.Scene {
+class MenuScene extends Phaser.Scene {
   constructor() {
     super({
       key: "Menu Scene",
@@ -19,10 +19,12 @@ export class MenuScene2 extends Phaser.Scene {
     animSprite.setScale(2);
 
     this.anims.create({
-      key: "walk",
+      key: "flap",
       frameRate: 4,
       repeat: -1,
-      frames: this.anims.generateFrameNumbers("test", { frames: [0, 1, 2] }),
+      frames: this.anims.generateFrameNumbers("animationSprite", {
+        frames: [0, 1, 2],
+      }),
     });
 
     const playButton = this.add
