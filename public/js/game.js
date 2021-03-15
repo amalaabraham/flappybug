@@ -2,33 +2,28 @@ var doDebug = false;
 var gameHeight, gameWidth;
 
 var DEBUG = (err) => {
-    if (doDebug)
-        console.log(err);
+  if (doDebug) console.log(err);
 };
 
 $(() => {
+  gameHeight = Math.floor($(document).height() * 0.8);
+  gameWidth = Math.floor($(document).width() * 0.8);
 
-    gameHeight = Math.floor($(document).height() * .8);
-    gameWidth = Math.floor($(document).width() * .8);
+  DEBUG(`game width = ${gameWidth}`);
+  DEBUG(`game height = ${gameHeight}`);
 
-    DEBUG(`game width = ${gameWidth}`);
-    DEBUG(`game height = ${gameHeight}`);
+  var config = {
+    width: gameWidth,
+    height: gameHeight,
+    backgroundColor: 0x000,
+    physics: {
+      default: "arcade",
+      arcade: {
+        gravity: { y: 0 },
+      },
+    },
+    scene: [LoadingScene, MenuScene, GameScene],
+  };
 
-
-    var config = {
-        width: gameWidth,
-        height: gameHeight,
-        backgroundColor: 0x000,
-        physics:
-        {
-            default: "arcade",
-            arcade: {
-                gravity: { y: 0 }
-            }
-        },
-        scene: [GameScene,],
-    }
-
-    game = new Phaser.Game(config);
-
+  game = new Phaser.Game(config);
 });
