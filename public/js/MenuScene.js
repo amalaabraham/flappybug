@@ -30,6 +30,17 @@ class MenuScene extends Phaser.Scene {
       )
       .setDepth(1);
 
+    // playButton.setScale(0.8);
+
+    const menuButton = this.add
+      .image(
+        this.game.renderer.width / 2,
+        this.game.renderer.height / 2 + 100,
+        "options_button"
+      )
+      .setDepth(1);
+
+    menuButton.setScale(1.1);
     playButton.setInteractive();
 
     playButton.on("pointerover", () => {

@@ -12,6 +12,7 @@ class LoadingScene extends Phaser.Scene {
     );
 
     this.load.image("play_button", "../game/assets/play_button.png");
+    this.load.image("options_button", "../game/assets/options_button.png");
 
     this.load.spritesheet(
       "animation_sprite",
