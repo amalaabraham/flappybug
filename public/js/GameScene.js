@@ -76,8 +76,7 @@ class GameScene extends Phaser.Scene {
             this.startGame()
         });
     
-        if(this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
-            this.startGame()
+        
     
     const objs = this.physics.add.staticGroup();
     this.objLayer.forEach((object) => {
@@ -97,6 +96,7 @@ class GameScene extends Phaser.Scene {
 
     startGame()
     {
+        this.hasGameStarted = true
         this.bug.startGame()
         this.envSpeed = sceneConfig.envSpeed
     }
@@ -110,5 +110,7 @@ class GameScene extends Phaser.Scene {
 
     this.bug.update();
 
+    if(this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
+        this.startGame()
   }
 }
