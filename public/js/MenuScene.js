@@ -31,7 +31,6 @@ class MenuScene extends Phaser.Scene {
       .setDepth(1);
 
     // playButton.setScale(0.8);
-
     const menuButton = this.add
       .image(
         this.game.renderer.width / 2,
@@ -42,11 +41,27 @@ class MenuScene extends Phaser.Scene {
 
     menuButton.setScale(1.1);
     playButton.setInteractive();
+    menuButton.setInteractive();
 
     playButton.on("pointerover", () => {
       animSprite.setVisible(true);
       animSprite.x = playButton.x - playButton.width;
       animSprite.y = playButton.y;
+      animSprite.play("flap");
+    });
+
+    menuButton.on("pointerout", () => {
+      animSprite.setVisible(false);
+    });
+
+    playButton.on("pointerup", () => {
+      this.scene.start("GameScene");
+    });
+
+    menuButton.on("pointerover", () => {
+      animSprite.setVisible(true);
+      animSprite.x = menuButton.x - menuButton.width;
+      animSprite.y = menuButton.y;
 
       animSprite.play("flap");
     });
@@ -55,8 +70,8 @@ class MenuScene extends Phaser.Scene {
       animSprite.setVisible(false);
     });
 
-    playButton.on("pointerup", () => {
-      this.scene.start("GameScene");
+    menuButton.on("pointerup", () => {
+      //   todo
     });
   }
 }
