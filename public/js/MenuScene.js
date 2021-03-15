@@ -9,7 +9,7 @@ class MenuScene extends Phaser.Scene {
     this.add.image(0, 0, "menu_background").setOrigin(0).setDepth(0);
 
     const animSprite = this.add
-      .sprite(100, 100, "animation_sprite")
+      .sprite(-100, -100, "animation_sprite")
       .setDepth(1);
     animSprite.setScale(2);
 
