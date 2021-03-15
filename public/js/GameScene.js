@@ -1,109 +1,103 @@
 class GameScene extends Phaser.Scene {
+  constructor() {
+    super("GameScene");
 
-    constructor() {
-        super('GameScene');
+    this.tilesets = null;
 
-        this.tilesets = null;
+    this.tileLayer = null; // Tile Layer includes ground and Background Image
+    this.objLayer = null; // Json array includes all objects except player
+    this.objLayerObjects = []; // include all physical objects
+    this.envSpeed = 3; // Background moving speed
 
-        this.tileLayer = null; // Tile Layer includes ground and Background Image
-        this.objLayer = null; // Json array includes all objects except player
-        this.objLayerObjects = [] // include all physical objects
-        this.envSpeed = 3 // Background moving speed
+    this.bug = null; // Bug Player
+  }
 
-        this.bug = null // Bug Player
-
+  getObjPropertyFromGid(gid, prop) {
+    if (this.tilesets == null || this.tilesets == undefined) {
+      DEBUG("Object JSON Tilesets");
+      return null;
     }
 
-    getObjPropertyFromGid(gid, prop) {
-        if (this.tilesets == null || this.tilesets == undefined) {
-            DEBUG("Object JSON Tilesets")
-            return null;
-        }
+    for (let i = 0; i < this.tilesets.length; i++) {
+      let obj = this.tilesets[i];
+      if (obj.gid == gid) return obj[prop];
+    }
+  }
 
-        for (let i = 0; i < this.tilesets.length; i++) {
-            let obj = this.tilesets[i]
-            if (obj.gid == gid)
-                return obj[prop]
-        }
+  loadTilesets() {
+    let json = $.ajax({
+      url: "../game/fp-env.json",
+      dataType: "json",
+      async: false,
+    }).responseJSON;
+    let tilesets = json["tilesets"];
+    this.tilesets = tilesets.map((item) => {
+      return {
+        image: "../game/" + item.image,
+        gid: item.firstgid,
+        name: item.name,
+      };
+    });
+  }
+
+  preload() {
+    this.loadTilesets();
+
+    this.load.tilemapTiledJSON("env", "../game/fp-env.json");
+
+    for (let i = 0; i < this.tilesets.length; i++) {
+      let obj = this.tilesets[i];
+      this.load.image(obj.name, obj.image);
     }
 
-    loadTilesets() {
-        let json = $.ajax({
-            url: "..\/game\/fp-env.json",
-            dataType: 'json',
-            async: false,
-        }).responseJSON;
-        let tilesets = json['tilesets']
-        this.tilesets = tilesets.map(item => {
-            return {
-                "image": '..\/game\/' + item.image,
-                "gid": item.firstgid,
-                "name": item.name,
-            }
-        });
-    }
+    this.load.image("bug", "../game/assets/fbug_01.png");
+  }
 
-    preload() {
+  create() {
+    const map = this.make.tilemap({ key: "env" });
 
-        this.loadTilesets();
+    const groundLayer = map.addTilesetImage("Ground_02");
+    const bgLayer = map.addTilesetImage("background");
 
+    this.tileLayer = map
+      .createLayer("Tile Layer 1", [groundLayer, bgLayer], 0, 0)
+      .setScale(0.83);
+    this.objLayer = map.getObjectLayer("Object Layer 1")["objects"];
 
-        this.load.tilemapTiledJSON('env', '..\/game\/fp-env.json');
+    const objs = this.physics.add.staticGroup();
+    this.objLayer.forEach((object) => {
+      let obj = objs.create(
+        object.x,
+        object.y,
+        this.getObjPropertyFromGid(object.gid, "name")
+      );
+      obj.setScale(0.79);
+      obj.setX(Math.round(object.x * 0.79));
+      obj.setY(Math.round(object.y * 0.79));
 
-        for (let i = 0; i < this.tilesets.length; i++) {
-            let obj = this.tilesets[i]
-            this.load.image(obj.name, obj.image)
-        }
+      this.objLayerObjects.push(obj);
+    });
 
-        this.load.image('bug', '..\/game\/assets\/fbug_01.png')
+    // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
 
-    }
+    this.bug = new Bug(this, gameWidth, gameHeight).render();
+    this.bug.player.setScale(1.2);
 
-    create() {
+    // player.body.velocity.y = 150
+    // player.body.velocity.x = 150
+  }
 
-        const map = this.make.tilemap({ key: 'env' });
+  update() {
+    this.tileLayer.x -= this.envSpeed;
 
-        const groundLayer = map.addTilesetImage('Ground_02')
-        const bgLayer = map.addTilesetImage('background')
+    this.objLayerObjects.forEach((obj) => {
+      obj.x -= this.envSpeed;
+    });
 
-        this.tileLayer = map.createLayer('Tile Layer 1', [groundLayer, bgLayer], 0, 0).setScale(0.83);
-        this.objLayer = map.getObjectLayer('Object Layer 1')['objects'];
+    this.bug.update();
 
-        const objs = this.physics.add.staticGroup()
-        this.objLayer.forEach(object => {
-            let obj = objs.create(object.x, object.y, this.getObjPropertyFromGid(object.gid, 'name'));
-            obj.setScale(0.79)
-            obj.setX( Math.round(object.x * 0.79))
-            obj.setY( Math.round(object.y * 0.79))
-
-            this.objLayerObjects.push(obj)
-        });
-
-        // var player = this.physics.add.sprite(Math.floor(gameHeight / 2), Math.floor(gameWidth / 4), 'bug');
-
-        this.bug = new Bug(this, gameWidth, gameHeight).render()
-        this.bug.player.setScale(1.2)
-
-
-        // player.body.velocity.y = 150
-        // player.body.velocity.x = 150
-    }
-
-    update()
-    {
-        this.tileLayer.x -= this.envSpeed;
-
-        this.objLayerObjects.forEach( obj => {
-            obj.x -= this.envSpeed;
-        })
-
-        this.bug.update()
-
-        // if(this.cursors.left.isDown) {
-        //     this.bug.player.body.velocity.y = 3;
-        //  }
-
-    }
-
-
+    // if(this.cursors.left.isDown) {
+    //     this.bug.player.body.velocity.y = 3;
+    //  }
+  }
 }
