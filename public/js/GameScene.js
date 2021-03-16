@@ -134,7 +134,7 @@ class GameScene extends Phaser.Scene {
         }
     });
 
-    this.scoreLabel = this.add.text(10, 10, 'Score: 000', {fontSize: '20px'})
+    this.scoreLabel = this.add.text(10, 10, 'Score: 0', {fontSize: '20px', fontFamily: 'PS2P', fill: 'yellow'})
   }
 
 
