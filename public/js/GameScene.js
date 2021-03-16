@@ -127,6 +127,10 @@ class GameScene extends Phaser.Scene {
           this.score += 5
           this.scoreLabel.setText(`Score: ${this.score}`)
         }
+        else if(_obj.texture.key == 'Sign_01')
+        {
+          // not collidable
+        }
         else{
           this.game_over = true
           this.stopGame()
