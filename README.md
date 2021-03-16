@@ -1,6 +1,6 @@
 # FlappyBug
 FlappyBug is Geeky Multiplayer version of the classic FlappyBird Game.
-
+![Flappy Bug Game Image](./flappy-bug-sc.png)
 # Contribution:
 We're open to contributions!
 ## Test Locally
