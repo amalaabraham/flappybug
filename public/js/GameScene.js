@@ -1,5 +1,5 @@
 var sceneConfig = {
-    envSpeed: 7,
+    envSpeed: 3,
 }
 
 class GameScene extends Phaser.Scene {
@@ -59,6 +59,10 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
+
+    this.hasGameStarted = false // Game Started?
+    this.game_over = false
+    
     const map = this.make.tilemap({ key: "env" });
 
     const groundLayer = map.addTilesetImage("Ground_02");
@@ -98,8 +102,9 @@ class GameScene extends Phaser.Scene {
     });
 
     this.physics.add.overlap(this.bug.player, this.objsGroup, (_player, _obj) => {
-        // this.game_over = true
-        // this.stopGame()
+        this.game_over = true
+        this.stopGame()
+        this.scene.start("GameOverScene");
         // show GameOver message
     });
 
