@@ -11,10 +11,11 @@ class GameScene extends Phaser.Scene {
         this.objLayerObjects = [] // include all physical objects
         this.envSpeed = 0 // Background moving speed
         this.hasGameStarted = false // Game Started?
+        this.game_over = false
         this.bug = null // Bug Player
-
+        this.objsGroup = null
     }
-
+    
     getObjPropertyFromGid(gid, prop) {
         if (this.tilesets == null || this.tilesets == undefined) {
             DEBUG("Object JSON Tilesets")
@@ -61,16 +62,18 @@ class GameScene extends Phaser.Scene {
     const map = this.make.tilemap({ key: "env" });
 
     const groundLayer = map.addTilesetImage("Ground_02");
+
     const bgLayer = map.addTilesetImage("background");
 
     this.tileLayer = map
       .createLayer("Tile Layer 1", [groundLayer, bgLayer], 0, 0)
       .setScale(0.83);
+
     this.objLayer = map.getObjectLayer("Object Layer 1")["objects"];
 
 
         this.bug = new Bug(this, gameWidth, gameHeight).render()
-        this.bug.player.setScale(1.2)
+        this.bug.player.setScale(0.7)
 
         this.input.keyboard.on('keydown-SPACE', ev => { 
             this.startGame()
@@ -78,28 +81,31 @@ class GameScene extends Phaser.Scene {
     
         
     
-    const objs = this.physics.add.staticGroup();
+    this.objsGroup = this.physics.add.group();
+
     this.objLayer.forEach((object) => {
-      let obj = objs.create(
+      let obj = this.objsGroup.create(
         object.x,
         object.y,
         this.getObjPropertyFromGid(object.gid, "name")
       );
       obj.setScale(0.79);
       obj.setX(Math.round(object.x * 0.79));
-      obj.setY(Math.round(object.y * 0.79));
-
+      obj.setY(Math.round(object.y
+       * 0.79));
+      obj.enableBody = true
+      obj.body.immovable = true
       this.objLayerObjects.push(obj);
+    });
+
+    this.physics.add.overlap(this.bug.player, this.objsGroup, (_player, _obj) => {
+        this.game_over = true
+        this.stopGame()
+        // show GameOver message
     });
 
   }
 
-    startGame()
-    {
-        this.hasGameStarted = true
-        this.bug.startGame()
-        this.envSpeed = sceneConfig.envSpeed
-    }
 
   update() {
     this.tileLayer.x -= this.envSpeed;
@@ -112,5 +118,28 @@ class GameScene extends Phaser.Scene {
 
     if(this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
         this.startGame()
+
+
+    // console.log(this.physics.world.collideSpriteVsGroup(this.bug.player, this.objsGroup))
+    // this.physics.arcade.collide(this.bug.player, this.objsGroup, (_player, _obj) => {console.log('Collision')})
+    
   }
+
+    startGame()
+    {
+        if(this.game_over)
+            return
+
+        this.hasGameStarted = true
+        this.bug.startGame()
+        this.envSpeed = sceneConfig.envSpeed
+    }
+
+
+    stopGame()
+    {
+        this.hasGameStarted = false
+        this.bug.stopGame()
+        this.envSpeed = 0
+    }
 }
