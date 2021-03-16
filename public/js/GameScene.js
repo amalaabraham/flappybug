@@ -1,5 +1,5 @@
 var sceneConfig = {
-    envSpeed: 3,
+    envSpeed: 7,
 }
 
 class GameScene extends Phaser.Scene {
@@ -89,18 +89,17 @@ class GameScene extends Phaser.Scene {
         object.y,
         this.getObjPropertyFromGid(object.gid, "name")
       );
-      obj.setScale(0.79);
-      obj.setX(Math.round(object.x * 0.79));
-      obj.setY(Math.round(object.y
-       * 0.79));
+      obj.setScale(obj.scale * 0.79);
+      obj.setX(Math.round(object.x * obj.scale));
+      obj.setY(Math.round(object.y * obj.scale));
       obj.enableBody = true
       obj.body.immovable = true
       this.objLayerObjects.push(obj);
     });
 
     this.physics.add.overlap(this.bug.player, this.objsGroup, (_player, _obj) => {
-        this.game_over = true
-        this.stopGame()
+        // this.game_over = true
+        // this.stopGame()
         // show GameOver message
     });
 
