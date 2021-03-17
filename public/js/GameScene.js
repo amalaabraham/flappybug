@@ -1,5 +1,6 @@
 var sceneConfig = {
     envSpeed: 3,
+    BigStarIDs: [308, ]
 }
 
 class GameScene extends Phaser.Scene {
@@ -14,6 +15,10 @@ class GameScene extends Phaser.Scene {
         this.game_over = false
         this.bug = null // Bug Player
         this.objsGroup = null
+
+        // scoring
+        this.scoreLabel = null
+        this.score = 0
     }
     
     getObjPropertyFromGid(gid, prop) {
@@ -86,28 +91,54 @@ class GameScene extends Phaser.Scene {
         
     
     this.objsGroup = this.physics.add.group();
-
+    
     this.objLayer.forEach((object) => {
+    let name = this.getObjPropertyFromGid(object.gid, "name")
+
       let obj = this.objsGroup.create(
         object.x,
         object.y,
-        this.getObjPropertyFromGid(object.gid, "name")
+        name,
       );
-      obj.setScale(obj.scale * 0.79);
-      obj.setX(Math.round(object.x * obj.scale));
-      obj.setY(Math.round(object.y * obj.scale));
+
+      obj.name = name
+      obj.setScale(0.79);
       obj.enableBody = true
       obj.body.immovable = true
+
+      if(name == 'Star')
+      {
+        if(sceneConfig.BigStarIDs.includes(object.id))
+          DEBUG('BIG STAR FOUND')
+        else
+          obj.setScale(obj.scale * 0.3);
+      }
+
+      obj.setX(Math.round(object.x * 0.79));
+      obj.setY(Math.round(object.y * 0.79));
       this.objLayerObjects.push(obj);
+
     });
 
     this.physics.add.overlap(this.bug.player, this.objsGroup, (_player, _obj) => {
-        this.game_over = true
-        this.stopGame()
-        this.scene.start("GameOverScene");
-        // show GameOver message
+        if(_obj.texture.key == 'Star')
+        {
+          _obj.destroy()
+          this.score += 5
+          this.scoreLabel.setText(`Score: ${this.score}`)
+        }
+        else if(_obj.texture.key == 'Sign_01')
+        {
+          // not collidable
+        }
+        else{
+          this.game_over = true
+          this.stopGame()
+          this.scene.start("GameOverScene");
+        }
     });
 
+    this.scoreLabel = this.add.text(10, 10, 'Score: 0', {fontSize: '20px', fontFamily: 'PS2P', fill: 'yellow'})
   }
 
 
@@ -122,12 +153,8 @@ class GameScene extends Phaser.Scene {
 
     if(this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
         this.startGame()
-
-
-    // console.log(this.physics.world.collideSpriteVsGroup(this.bug.player, this.objsGroup))
-    // this.physics.arcade.collide(this.bug.player, this.objsGroup, (_player, _obj) => {console.log('Collision')})
-    
   }
+
 
     startGame()
     {
