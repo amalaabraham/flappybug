@@ -1,7 +1,5 @@
 class MenuScene extends Phaser.Scene {
 
-  
-
   constructor() {
     super({
       key: "MenuScene",
@@ -102,7 +100,7 @@ class MenuScene extends Phaser.Scene {
     });
 
     multiplayButton.on("pointerup", () => {
-        console.log('PLAY MULTI')
+      this.scene.start("WaitingScene");
     });
 
     playButton.on("pointerover", () => {
