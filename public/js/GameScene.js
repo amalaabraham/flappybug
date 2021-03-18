@@ -21,12 +21,14 @@ class GameScene extends Phaser.Scene {
         this.score = 0
     }
 
-    for (let i = 0; i < this.tilesets.length; i++) {
-      let obj = this.tilesets[i];
-      if (obj.gid == gid) return obj[prop];
+    getObjPropertyFromGid(gid, prop)
+    {
+      for (let i = 0; i < this.tilesets.length; i++) {
+        let obj = this.tilesets[i];
+        if (obj.gid == gid) return obj[prop];
+      }
     }
-  }
-  
+
   init(data)
   {
       this.tilesets = data.tilesets
