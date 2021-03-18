@@ -1,10 +1,20 @@
 class MenuScene extends Phaser.Scene {
+
+  
+
   constructor() {
     super({
       key: "MenuScene",
     });
+
+    this.tilesets = null
   }
 
+  init(data)
+  {
+    this.tilesets = data.tilesets;
+  }
+  
   create() {
     this.add.image(0, 0, "menu_background").setOrigin(0).setDepth(0);
 
@@ -55,7 +65,7 @@ class MenuScene extends Phaser.Scene {
     });
 
     playButton.on("pointerup", () => {
-      this.scene.start("GameScene");
+      this.scene.start("GameScene", {tilesets: this.tilesets} );
     });
 
     menuButton.on("pointerover", () => {
