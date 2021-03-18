@@ -1,3 +1,19 @@
+const createAligned = (scene, totalWidth, texture, scrollFactor) => {
+  let x = 0;
+  const w = scene.textures.get(texture).getSourceImage().width;
+
+  const count = Math.ceil(totalWidth / w) * scrollFactor;
+
+  for (let i = 0; i < count; i++) {
+    const m = scene.add
+      .image(x, scene.scale.height, texture)
+      .setOrigin(0, 1)
+      .setScrollFactor(scrollFactor);
+    m.scale = 0.5;
+    x += m.width * 0.5;
+  }
+};
+
 class MenuScene extends Phaser.Scene {
   constructor() {
     super({
@@ -6,12 +22,30 @@ class MenuScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(0, 0, "menu_background").setOrigin(0).setDepth(0);
+    // this.add.image(0, 0, "sky").setOrigin(0).setDepth(0);
+
+    const width = this.scale.width;
+    const height = this.scale.height;
+    const totalWidth = width * 3000;
+    console.log(totalWidth);
+
+    const skyBg = this.add
+      .image(width * 0.5, height * 0.5, "sky")
+      .setScrollFactor(0);
+    skyBg.scale = 0.55;
+
+    createAligned(this, totalWidth, "mountain", 0.25);
+    createAligned(this, totalWidth, "plateau", 0.5);
+    createAligned(this, totalWidth, "ground", 1);
+    createAligned(this, totalWidth, "plants", 1.25);
+
+    this.cameras.main.setBounds(0, 0, width * 3000, height);
 
     const animSprite = this.add
       .sprite(-100, -100, "animation_sprite")
       .setDepth(1);
     animSprite.setScale(2);
+    animSprite.setScrollFactor(0);
 
     this.anims.create({
       key: "flap",
@@ -29,6 +63,7 @@ class MenuScene extends Phaser.Scene {
         "play_button"
       )
       .setDepth(1);
+    playButton.setScrollFactor(0);
 
     // playButton.setScale(0.8);
     const menuButton = this.add
@@ -38,6 +73,7 @@ class MenuScene extends Phaser.Scene {
         "options_button"
       )
       .setDepth(1);
+    menuButton.setScrollFactor(0);
 
     menuButton.setScale(1.1);
     playButton.setInteractive();
@@ -73,5 +109,11 @@ class MenuScene extends Phaser.Scene {
     menuButton.on("pointerup", () => {
       //   todo
     });
+  }
+
+  update() {
+    const cam = this.cameras.main;
+    const speed = 3;
+    cam.scrollX += speed;
   }
 }
