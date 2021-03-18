@@ -1,10 +1,20 @@
 class MenuScene extends Phaser.Scene {
+
+  
+
   constructor() {
     super({
       key: "MenuScene",
     });
-  }
 
+    this.tilesets = null
+  }
+  
+  init(data)
+  {
+    this.tilesets = data.tilesets;
+  }
+  
   create() {
     const width = this.scale.width;
     const height = this.scale.height;
@@ -22,6 +32,10 @@ class MenuScene extends Phaser.Scene {
     createAligned(this, totalWidth, "plants", 1.25);
 
     this.cameras.main.setBounds(0, 0, width * 3000, height);
+
+    let menumusic = this.sound.add("menu_audio", { loop: true });
+    menumusic.play();
+
 
     const animSprite = this.add
       .sprite(-100, -100, "animation_sprite")
@@ -73,7 +87,8 @@ class MenuScene extends Phaser.Scene {
     });
 
     playButton.on("pointerup", () => {
-      this.scene.start("GameScene");
+      this.sound.stopByKey('menu_audio');
+      this.scene.start("GameScene", {tilesets: this.tilesets} );
     });
 
     menuButton.on("pointerover", () => {

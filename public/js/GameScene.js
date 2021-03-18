@@ -5,26 +5,20 @@ var sceneConfig = {
 
 class GameScene extends Phaser.Scene {
   constructor() {
-    super("GameScene");
-    this.tilesets = null;
-    this.tileLayer = null; // Tile Layer includes ground and Background Image
-    this.objLayer = null; // Json array includes all objects except player
-    this.objLayerObjects = []; // include all physical objects
-    this.envSpeed = 0; // Background moving speed
-    this.hasGameStarted = false; // Game Started?
-    this.game_over = false;
-    this.bug = null; // Bug Player
-    this.objsGroup = null;
+        super("GameScene");
+        this.tileLayer = null; // Tile Layer includes ground and Background Image
+        this.objLayer = null; // Json array includes all objects except player
+        this.objLayerObjects = [] // include all physical objects
+        this.envSpeed = 0 // Background moving speed
+        this.hasGameStarted = false // Game Started?
+        this.game_over = false
+        this.bug = null // Bug Player
+        this.objsGroup = null
+        this.tilesets = null
 
-    // scoring
-    this.scoreLabel = null;
-    this.score = 0;
-  }
-
-  getObjPropertyFromGid(gid, prop) {
-    if (this.tilesets == null || this.tilesets == undefined) {
-      DEBUG("Object JSON Tilesets");
-      return null;
+        // scoring
+        this.scoreLabel = null
+        this.score = 0
     }
 
     for (let i = 0; i < this.tilesets.length; i++) {
@@ -32,41 +26,20 @@ class GameScene extends Phaser.Scene {
       if (obj.gid == gid) return obj[prop];
     }
   }
-
-  loadTilesets() {
-    let json = $.ajax({
-      url: "../game/fp-env.json",
-      dataType: "json",
-      async: false,
-    }).responseJSON;
-    let tilesets = json["tilesets"];
-    this.tilesets = tilesets.map((item) => {
-      return {
-        image: "../game/" + item.image,
-        gid: item.firstgid,
-        name: item.name,
-      };
-    });
-  }
-
-  preload() {
-    this.loadTilesets();
-    this.load.tilemapTiledJSON("env", "../game/fp-env.json");
-    for (let i = 0; i < this.tilesets.length; i++) {
-      let obj = this.tilesets[i];
-      this.load.image(obj.name, obj.image);
-    }
-    this.load.image("bug", "../game/assets/fbug_01.png");
+  
+  init(data)
+  {
+      this.tilesets = data.tilesets
   }
 
   create() {
-    this.hasGameStarted = false; // Game Started?
-    this.game_over = false;
-
-    const width = this.scale.width;
-    const height = this.scale.height;
-    const totalWidth = width * 3000;
-
+    let audio_coin = this.sound.add("audio_coin", { loop: false });
+    let gameover = this.sound.add("gameover_audio", { loop: false });
+    let bg = this.sound.add("background_audio", { loop: true });
+    bg.play();
+    this.hasGameStarted = false // Game Started?
+    this.game_over = false
+    
     const map = this.make.tilemap({ key: "env" });
 
     const groundLayer = map.addTilesetImage("Ground_02");
@@ -132,14 +105,16 @@ class GameScene extends Phaser.Scene {
           this.scoreLabel.setText(`Score: ${this.score}`);
         } else if (_obj.texture.key == "Sign_01") {
           // not collidable
-        } else {
-          console.log("collided");
-          this.game_over = true;
-          this.stopGame();
-          this.scene.start("GameOverScene", this.score);
         }
-      }
-    );
+        else{
+          this.game_over = true
+          this.stopGame() 
+          bg.pause();
+          gameover.play();
+          this.scene.start("GameOverScene"); 
+        }
+    });
+
 
     this.scoreLabel = this.add
       .text(10, 10, "Score: 0", {
@@ -149,9 +124,6 @@ class GameScene extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
-      // this.bug.player.setScrollFactor(0);
-
-      // cam.startFollow(this.bug.player);
   }
 
   update() {
@@ -161,6 +133,7 @@ class GameScene extends Phaser.Scene {
     // });
     if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
       this.startGame();
+
 
     this.bug.update();
 
@@ -174,14 +147,18 @@ class GameScene extends Phaser.Scene {
     
   }
   startGame() {
-    if (this.game_over) return;
-    this.hasGameStarted = true;
-    this.bug.startGame();
-    // this.envSpeed = sceneConfig.envSpeed;
-  }
-  stopGame() {
-    this.hasGameStarted = false;
-    this.bug.stopGame();
-    // this.envSpeed = 0;
-  }
+        if(this.game_over)
+            return
+        this.hasGameStarted = true
+        this.bug.startGame()
+        this.envSpeed = sceneConfig.envSpeed
+    }
+
+
+    stopGame()
+    {
+        this.sound.stopByKey('bg');
+        this.hasGameStarted = false
+        this.bug.stopGame()
+    }
 }
