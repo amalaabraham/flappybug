@@ -1,10 +1,29 @@
 const express = require('express')
-
 const app = express();
-const port = process.env.PORT || 8000;
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const Player = require('./Player')
+const PlayersEnv = require('./PlayersEnv')
+
+const port = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 
-app.listen(port, () => {
+let playersEnv = new PlayersEnv()
+
+io.on('connection', socket => {
+
+
+  let player = new Player(socket, playersEnv.getAvailableId())
+
+  playersEnv.addPlayer(player)
+  
+  socket.on('disconnect', () => {
+    playersEnv.dropPlayer(player.id)
+  });
+
+});
+
+http.listen(port, () => {
   console.log(`FlappyBug listenning on port ${port}!`)
 });

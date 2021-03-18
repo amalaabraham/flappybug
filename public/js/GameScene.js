@@ -6,7 +6,6 @@ var sceneConfig = {
 class GameScene extends Phaser.Scene {
   constructor() {
         super("GameScene");
-        this.tilesets = null;
         this.tileLayer = null; // Tile Layer includes ground and Background Image
         this.objLayer = null; // Json array includes all objects except player
         this.objLayerObjects = [] // include all physical objects
@@ -15,6 +14,7 @@ class GameScene extends Phaser.Scene {
         this.game_over = false
         this.bug = null // Bug Player
         this.objsGroup = null
+        this.tilesets = null
 
         // scoring
         this.scoreLabel = null
@@ -34,37 +34,17 @@ class GameScene extends Phaser.Scene {
         }
     }
 
-  loadTilesets() {
-    let json = $.ajax({
-      url: "../game/fp-env.json",
-      dataType: "json",
-      async: false,
-    }).responseJSON;
-    let tilesets = json["tilesets"];
-    this.tilesets = tilesets.map((item) => {
-      return {
-        image: "../game/" + item.image,
-        gid: item.firstgid,
-        name: item.name,
-      };
-    });
+  
+  init(data)
+  {
+      this.tilesets = data.tilesets
   }
 
   preload() {
-    this.loadTilesets();
-
-    this.load.tilemapTiledJSON("env", "../game/fp-env.json");
-
-    for (let i = 0; i < this.tilesets.length; i++) {
-      let obj = this.tilesets[i];
-      this.load.image(obj.name, obj.image);
-    }
-
-    this.load.image("bug", "../game/assets/fbug_01.png");
     this.load.audio("audio_coin", "../game/assets/audio/audio_coin.mp3");
     this.load.audio("gameover_audio", "../game/assets/audio/gameover.wav");
     this.load.audio("background_audio", "../game/assets/audio/background_audio.mp3");
-   
+
   }
 
   create() {

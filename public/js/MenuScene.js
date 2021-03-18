@@ -1,10 +1,19 @@
 class MenuScene extends Phaser.Scene {
+
+  
+
   constructor() {
     super({
       key: "MenuScene",
     });
-  }
 
+    this.tilesets = null
+  }
+  
+  init(data)
+  {
+    this.tilesets = data.tilesets;
+  }
   preload() {
     this.load.audio("menu_audio", "../game/assets/audio/menu_audio.mp3");
   }
@@ -62,7 +71,7 @@ class MenuScene extends Phaser.Scene {
 
     playButton.on("pointerup", () => {
       this.sound.stopByKey('menu_audio');
-      this.scene.start("GameScene");
+      this.scene.start("GameScene", {tilesets: this.tilesets} );
     });
 
     menuButton.on("pointerover", () => {
