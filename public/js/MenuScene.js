@@ -75,6 +75,36 @@ class MenuScene extends Phaser.Scene {
     playButton.setInteractive();
     menuButton.setInteractive();
 
+
+    const multiplayButton = this.add
+      .image(
+        this.game.renderer.width / 2,
+        this.game.renderer.height / 2 - 100,
+        "multiplay_button"
+      )
+      .setDepth(1);
+
+    multiplayButton.setInteractive();
+
+    
+    multiplayButton.setScale(0.7)
+    multiplayButton.setScrollFactor(0);
+
+    multiplayButton.on("pointerover", () => {
+      animSprite.setVisible(true);
+      animSprite.x = multiplayButton.x - multiplayButton.width / 2 - 10;
+      animSprite.y = multiplayButton.y;
+      animSprite.play("flap");
+    });
+
+    multiplayButton.on("pointerout", () => {
+        animSprite.setVisible(false);
+    });
+
+    multiplayButton.on("pointerup", () => {
+        console.log('PLAY MULTI')
+    });
+
     playButton.on("pointerover", () => {
       animSprite.setVisible(true);
       animSprite.x = playButton.x - playButton.width;
