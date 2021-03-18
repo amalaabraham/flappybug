@@ -1,38 +1,37 @@
 var sceneConfig = {
-    envSpeed: 3,
-    BigStarIDs: [308, ]
-}
+  envSpeed: 3,
+  BigStarIDs: [308],
+};
 
 class GameScene extends Phaser.Scene {
   constructor() {
-        super("GameScene");
-        this.tilesets = null;
-        this.tileLayer = null; // Tile Layer includes ground and Background Image
-        this.objLayer = null; // Json array includes all objects except player
-        this.objLayerObjects = [] // include all physical objects
-        this.envSpeed = 0 // Background moving speed
-        this.hasGameStarted = false // Game Started?
-        this.game_over = false
-        this.bug = null // Bug Player
-        this.objsGroup = null
+    super("GameScene");
+    this.tilesets = null;
+    this.tileLayer = null; // Tile Layer includes ground and Background Image
+    this.objLayer = null; // Json array includes all objects except player
+    this.objLayerObjects = []; // include all physical objects
+    this.envSpeed = 0; // Background moving speed
+    this.hasGameStarted = false; // Game Started?
+    this.game_over = false;
+    this.bug = null; // Bug Player
+    this.objsGroup = null;
 
-        // scoring
-        this.scoreLabel = null
-        this.score = 0
-    }
-    
-    getObjPropertyFromGid(gid, prop) {
-        if (this.tilesets == null || this.tilesets == undefined) {
-            DEBUG("Object JSON Tilesets")
-            return null;
-        }
+    // scoring
+    this.scoreLabel = null;
+    this.score = 0;
+  }
 
-        for (let i = 0; i < this.tilesets.length; i++) {
-            let obj = this.tilesets[i]
-            if (obj.gid == gid)
-                return obj[prop]
-        }
+  getObjPropertyFromGid(gid, prop) {
+    if (this.tilesets == null || this.tilesets == undefined) {
+      DEBUG("Object JSON Tilesets");
+      return null;
     }
+
+    for (let i = 0; i < this.tilesets.length; i++) {
+      let obj = this.tilesets[i];
+      if (obj.gid == gid) return obj[prop];
+    }
+  }
 
   loadTilesets() {
     let json = $.ajax({
@@ -64,10 +63,9 @@ class GameScene extends Phaser.Scene {
   }
 
   create() {
+    this.hasGameStarted = false; // Game Started?
+    this.game_over = false;
 
-    this.hasGameStarted = false // Game Started?
-    this.game_over = false
-    
     const map = this.make.tilemap({ key: "env" });
 
     const groundLayer = map.addTilesetImage("Ground_02");
@@ -80,67 +78,59 @@ class GameScene extends Phaser.Scene {
 
     this.objLayer = map.getObjectLayer("Object Layer 1")["objects"];
 
+    this.bug = new Bug(this, gameWidth, gameHeight).render();
+    this.bug.player.setScale(0.7);
 
-        this.bug = new Bug(this, gameWidth, gameHeight).render()
-        this.bug.player.setScale(0.7)
+    this.input.keyboard.on("keydown-SPACE", (ev) => {
+      this.startGame();
+    });
 
-        this.input.keyboard.on('keydown-SPACE', ev => { 
-            this.startGame()
-        });
-    
-        
-    
     this.objsGroup = this.physics.add.group();
-    
+
     this.objLayer.forEach((object) => {
-    let name = this.getObjPropertyFromGid(object.gid, "name")
+      let name = this.getObjPropertyFromGid(object.gid, "name");
 
-      let obj = this.objsGroup.create(
-        object.x,
-        object.y,
-        name,
-      );
+      let obj = this.objsGroup.create(object.x, object.y, name);
 
-      obj.name = name
+      obj.name = name;
       obj.setScale(0.79);
-      obj.enableBody = true
-      obj.body.immovable = true
+      obj.enableBody = true;
+      obj.body.immovable = true;
 
-      if(name == 'Star')
-      {
-        if(sceneConfig.BigStarIDs.includes(object.id))
-          DEBUG('BIG STAR FOUND')
-        else
-          obj.setScale(obj.scale * 0.3);
+      if (name == "Star") {
+        if (sceneConfig.BigStarIDs.includes(object.id)) DEBUG("BIG STAR FOUND");
+        else obj.setScale(obj.scale * 0.3);
       }
 
       obj.setX(Math.round(object.x * 0.79));
       obj.setY(Math.round(object.y * 0.79));
       this.objLayerObjects.push(obj);
-
     });
 
-    this.physics.add.overlap(this.bug.player, this.objsGroup, (_player, _obj) => {
-        if(_obj.texture.key == 'Star')
-        {
-          _obj.destroy()
-          this.score += 5
-          this.scoreLabel.setText(`Score: ${this.score}`)
-        }
-        else if(_obj.texture.key == 'Sign_01')
-        {
+    this.physics.add.overlap(
+      this.bug.player,
+      this.objsGroup,
+      (_player, _obj) => {
+        if (_obj.texture.key == "Star") {
+          _obj.destroy();
+          this.score += 5;
+          this.scoreLabel.setText(`Score: ${this.score}`);
+        } else if (_obj.texture.key == "Sign_01") {
           // not collidable
+        } else {
+          this.game_over = true;
+          this.stopGame();
+          this.scene.start("GameOverScene", this.score);
         }
-        else{
-          this.game_over = true
-          this.stopGame()
-          this.scene.start("GameOverScene");
-        }
+      }
+    );
+
+    this.scoreLabel = this.add.text(10, 10, "Score: 0", {
+      fontSize: "20px",
+      fontFamily: "PS2P",
+      fill: "yellow",
     });
-
-    this.scoreLabel = this.add.text(10, 10, 'Score: 0', {fontSize: '20px', fontFamily: 'PS2P', fill: 'yellow'})
   }
-
 
   update() {
     this.tileLayer.x -= this.envSpeed;
@@ -151,26 +141,21 @@ class GameScene extends Phaser.Scene {
 
     this.bug.update();
 
-    if(this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
-        this.startGame()
+    if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
+      this.startGame();
   }
 
+  startGame() {
+    if (this.game_over) return;
 
-    startGame()
-    {
-        if(this.game_over)
-            return
+    this.hasGameStarted = true;
+    this.bug.startGame();
+    this.envSpeed = sceneConfig.envSpeed;
+  }
 
-        this.hasGameStarted = true
-        this.bug.startGame()
-        this.envSpeed = sceneConfig.envSpeed
-    }
-
-
-    stopGame()
-    {
-        this.hasGameStarted = false
-        this.bug.stopGame()
-        this.envSpeed = 0
-    }
+  stopGame() {
+    this.hasGameStarted = false;
+    this.bug.stopGame();
+    this.envSpeed = 0;
+  }
 }
