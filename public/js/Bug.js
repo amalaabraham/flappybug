@@ -16,7 +16,7 @@ class Bug {
 
   render() {
     this.player = this.scene.physics.add.sprite(
-      Math.floor(gameWidth / 5),
+      Math.floor(gameWidth / 2),
       Math.floor(gameHeight / 2),
       "bug"
     );
