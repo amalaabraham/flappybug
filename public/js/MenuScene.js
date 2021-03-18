@@ -9,13 +9,18 @@ class MenuScene extends Phaser.Scene {
 
     this.tilesets = null
   }
-
+  
   init(data)
   {
     this.tilesets = data.tilesets;
   }
-  
+  preload() {
+    this.load.audio("menu_audio", "../game/assets/audio/menu_audio.mp3");
+  }
+
   create() {
+    let menumusic = this.sound.add("menu_audio", { loop: true });
+    menumusic.play();
     this.add.image(0, 0, "menu_background").setOrigin(0).setDepth(0);
 
     const animSprite = this.add
@@ -65,6 +70,7 @@ class MenuScene extends Phaser.Scene {
     });
 
     playButton.on("pointerup", () => {
+      this.sound.stopByKey('menu_audio');
       this.scene.start("GameScene", {tilesets: this.tilesets} );
     });
 

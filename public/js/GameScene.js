@@ -40,8 +40,18 @@ class GameScene extends Phaser.Scene {
       this.tilesets = data.tilesets
   }
 
-  create() {
+  preload() {
+    this.load.audio("audio_coin", "../game/assets/audio/audio_coin.mp3");
+    this.load.audio("gameover_audio", "../game/assets/audio/gameover.wav");
+    this.load.audio("background_audio", "../game/assets/audio/background_audio.mp3");
 
+  }
+
+  create() {
+    let audio_coin = this.sound.add("audio_coin", { loop: false });
+    let gameover = this.sound.add("gameover_audio", { loop: false });
+    let bg = this.sound.add("background_audio", { loop: true });
+    bg.play();
     this.hasGameStarted = false // Game Started?
     this.game_over = false
     
@@ -101,6 +111,7 @@ class GameScene extends Phaser.Scene {
         if(_obj.texture.key == 'Star')
         {
           _obj.destroy()
+          audio_coin.play();
           this.score += 5
           this.scoreLabel.setText(`Score: ${this.score}`)
         }
@@ -110,8 +121,10 @@ class GameScene extends Phaser.Scene {
         }
         else{
           this.game_over = true
-          this.stopGame()
-          this.scene.start("GameOverScene");
+          this.stopGame() 
+          bg.pause();
+          gameover.play();
+          this.scene.start("GameOverScene"); 
         }
     });
 
@@ -121,7 +134,6 @@ class GameScene extends Phaser.Scene {
 
   update() {
     this.tileLayer.x -= this.envSpeed;
-
     this.objLayerObjects.forEach((obj) => {
       obj.x -= this.envSpeed;
     });
@@ -137,7 +149,6 @@ class GameScene extends Phaser.Scene {
     {
         if(this.game_over)
             return
-
         this.hasGameStarted = true
         this.bug.startGame()
         this.envSpeed = sceneConfig.envSpeed
@@ -146,6 +157,7 @@ class GameScene extends Phaser.Scene {
 
     stopGame()
     {
+        this.sound.stopByKey('bg');
         this.hasGameStarted = false
         this.bug.stopGame()
         this.envSpeed = 0
