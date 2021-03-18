@@ -50,15 +50,12 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.loadTilesets();
-
-    this.load.tilemapTiledJSON("env", "../game/fp-env.json");
-
-    for (let i = 0; i < this.tilesets.length; i++) {
-      let obj = this.tilesets[i];
-      this.load.image(obj.name, obj.image);
-    }
-
+    // this.loadTilesets();
+    // this.load.tilemapTiledJSON("env", "../game/fp-env.json");
+    // for (let i = 0; i < this.tilesets.length; i++) {
+    //   let obj = this.tilesets[i];
+    //   this.load.image(obj.name, obj.image);
+    // }
     this.load.image("bug", "../game/assets/fbug_01.png");
   }
 
@@ -66,19 +63,36 @@ class GameScene extends Phaser.Scene {
     this.hasGameStarted = false; // Game Started?
     this.game_over = false;
 
-    const map = this.make.tilemap({ key: "env" });
+    const width = this.scale.width;
+    const height = this.scale.height;
+    const totalWidth = width * 3000;
 
-    const groundLayer = map.addTilesetImage("Ground_02");
+    // const map = this.make.tilemap({ key: "env" });
 
-    const bgLayer = map.addTilesetImage("background");
+    // const groundLayer = map.addTilesetImage("Ground_02");
 
-    this.tileLayer = map
-      .createLayer("Tile Layer 1", [groundLayer, bgLayer], 0, 0)
-      .setScale(0.83);
+    // const bgLayer = map.addTilesetImage("background");
 
-    this.objLayer = map.getObjectLayer("Object Layer 1")["objects"];
+    // this.tileLayer = map
+    //   .createLayer("Tile Layer 1", [groundLayer, bgLayer], 0, 0)
+    //   .setScale(0.83);
 
-    this.bug = new Bug(this, gameWidth, gameHeight).render();
+    // this.objLayer = map.getObjectLayer("Object Layer 1")["objects"];
+
+    const skyBg = this.add
+      .image(width * 0.5, height * 0.5, "sky")
+      .setScrollFactor(0);
+    skyBg.scale = 0.55;
+
+    createAligned(this, totalWidth, "mountain", 0.25);
+    createAligned(this, totalWidth, "plateau", 0.5);
+    createAligned(this, totalWidth, "ground", 1);
+    createAligned(this, totalWidth, "plants", 1.25);
+
+    this.cameras.main.setBounds(0, 0, width * 3000, height);
+
+    this.bug = new Bug(this, gameWidth, gameHeight);
+    this.bug.render();
     this.bug.player.setScale(0.7);
 
     this.input.keyboard.on("keydown-SPACE", (ev) => {
@@ -87,25 +101,25 @@ class GameScene extends Phaser.Scene {
 
     this.objsGroup = this.physics.add.group();
 
-    this.objLayer.forEach((object) => {
-      let name = this.getObjPropertyFromGid(object.gid, "name");
+    // this.objLayer.forEach((object) => {
+    //   let name = this.getObjPropertyFromGid(object.gid, "name");
 
-      let obj = this.objsGroup.create(object.x, object.y, name);
+    //   let obj = this.objsGroup.create(object.x, object.y, name);
 
-      obj.name = name;
-      obj.setScale(0.79);
-      obj.enableBody = true;
-      obj.body.immovable = true;
+    //   obj.name = name;
+    //   obj.setScale(0.79);
+    //   obj.enableBody = true;
+    //   obj.body.immovable = true;
 
-      if (name == "Star") {
-        if (sceneConfig.BigStarIDs.includes(object.id)) DEBUG("BIG STAR FOUND");
-        else obj.setScale(obj.scale * 0.3);
-      }
+    //   if (name == "Star") {
+    //     if (sceneConfig.BigStarIDs.includes(object.id)) DEBUG("BIG STAR FOUND");
+    //     else obj.setScale(obj.scale * 0.3);
+    //   }
 
-      obj.setX(Math.round(object.x * 0.79));
-      obj.setY(Math.round(object.y * 0.79));
-      this.objLayerObjects.push(obj);
-    });
+    //   obj.setX(Math.round(object.x * 0.79));
+    //   obj.setY(Math.round(object.y * 0.79));
+    //   this.objLayerObjects.push(obj);
+    // });
 
     this.physics.add.overlap(
       this.bug.player,
@@ -133,29 +147,29 @@ class GameScene extends Phaser.Scene {
   }
 
   update() {
-    this.tileLayer.x -= this.envSpeed;
-
-    this.objLayerObjects.forEach((obj) => {
-      obj.x -= this.envSpeed;
-    });
-
+    // this.tileLayer.x -= this.envSpeed;
+    // this.objLayerObjects.forEach((obj) => {
+    //   obj.x -= this.envSpeed;
+    // });
     this.bug.update();
-
+    this.bug.player.setVelocityX(5);
+    this.bug.player.setScrollFactor(0);
     if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
       this.startGame();
-  }
 
+    const cam = this.cameras.main;
+    const speed = 4;
+    cam.scrollX += speed;
+  }
   startGame() {
     if (this.game_over) return;
-
     this.hasGameStarted = true;
     this.bug.startGame();
-    this.envSpeed = sceneConfig.envSpeed;
+    // this.envSpeed = sceneConfig.envSpeed;
   }
-
-  stopGame() {
-    this.hasGameStarted = false;
-    this.bug.stopGame();
-    this.envSpeed = 0;
-  }
+  // stopGame() {
+  //   this.hasGameStarted = false;
+  //   this.bug.stopGame();
+  // this.envSpeed = 0;
+  // }
 }
