@@ -14,7 +14,7 @@ class MenuScene extends Phaser.Scene {
     const skyBg = this.add
       .image(width * 0.5, height * 0.5, "sky")
       .setScrollFactor(0);
-    skyBg.scale = 0.55;
+    skyBg.scale = 0.6;
 
     createAligned(this, totalWidth, "mountain", 0.25);
     createAligned(this, totalWidth, "plateau", 0.5);
