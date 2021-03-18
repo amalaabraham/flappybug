@@ -4,7 +4,6 @@ class GameOverScene extends Phaser.Scene {
       key: "GameOverScene",
     });
   }
-
   create() {
     this.add.image(0, 0, "go_background").setOrigin(0).setDepth(0);
     let label = this.add.text(gameWidth / 2, gameHeight / 2, "Game Over!", { fontSize: '50px', fontFamily: 'PS2P', align: 'center', fill: '#fff' })

@@ -10,10 +10,16 @@ class LoadingScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image(
-      "menu_background",
-      "../game/Map/PNG/Background/Background_01.png"
-    );
+    // this.load.image(
+    //   "menu_background",
+    //   "../game/Map/PNG/Background/Background_01.png"
+    // );
+
+    this.load.image("sky", "../game/assets/sky.png");
+    this.load.image("mountain", "../game/assets/mountains.png");
+    this.load.image("plateau", "../game/assets/plateau.png");
+    this.load.image("ground", "../game/assets/ground.png");
+    this.load.image("plants", "../game/assets/plant.png");
 
     this.load.image( "go_background", "../game/Map/PNG/Background/Background_02.png"); // gameover scene background
     this.load.image("bug", "../game/assets/fbug_01.png"); // bug
