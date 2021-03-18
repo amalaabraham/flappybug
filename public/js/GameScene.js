@@ -1,35 +1,34 @@
 var sceneConfig = {
-  envSpeed: 3,
   BigStarIDs: [308],
 };
 
 class GameScene extends Phaser.Scene {
   constructor() {
-    super("GameScene");
-    this.tileLayer = null; // Tile Layer includes ground and Background Image
-    this.objLayer = null; // Json array includes all objects except player
-    this.objLayerObjects = []; // include all physical objects
-    this.envSpeed = 0; // Background moving speed
-    this.hasGameStarted = false; // Game Started?
-    this.game_over = false;
-    this.bug = null; // Bug Player
-    this.objsGroup = null;
-    this.tilesets = null;
+        super("GameScene");
+        this.objLayer = null; // Json array includes all objects except player
+        this.objLayerObjects = [] // include all physical objects
+        this.hasGameStarted = false // Game Started?
+        this.game_over = false
+        this.bug = null // Bug Player
+        this.objsGroup = null
+        this.tilesets = null
 
-    // scoring
-    this.scoreLabel = null;
-    this.score = 0;
-  }
-
-  getObjPropertyFromGid(gid, prop) {
-    for (let i = 0; i < this.tilesets.length; i++) {
-      let obj = this.tilesets[i];
-      if (obj.gid == gid) return obj[prop];
+        // scoring
+        this.scoreLabel = null
+        this.score = 0
     }
-  }
 
-  init(data) {
-    this.tilesets = data.tilesets;
+    getObjPropertyFromGid(gid, prop)
+    {
+      for (let i = 0; i < this.tilesets.length; i++) {
+        let obj = this.tilesets[i];
+        if (obj.gid == gid) return obj[prop];
+      }
+    }
+
+  init(data)
+  {
+      this.tilesets = data.tilesets
   }
 
   create() {
@@ -37,22 +36,14 @@ class GameScene extends Phaser.Scene {
     let gameover = this.sound.add("gameover_audio", { loop: false });
     let bg = this.sound.add("background_audio", { loop: true });
     bg.play();
-    this.hasGameStarted = false; // Game Started?
-    this.game_over = false;
-
+    this.hasGameStarted = false // Game Started?
+    this.game_over = false
+    
     const width = this.scale.width;
     const height = this.scale.height;
     const totalWidth = width * 3000;
 
     const map = this.make.tilemap({ key: "env" });
-
-    const groundLayer = map.addTilesetImage("Ground_02");
-
-    const bgLayer = map.addTilesetImage("background");
-
-    this.tileLayer = map
-      .createLayer("Tile Layer 1", [groundLayer, bgLayer], 0, 0)
-      .setScale(0.83);
 
     this.objLayer = map.getObjectLayer("Object Layer 1")["objects"];
 
@@ -88,7 +79,7 @@ class GameScene extends Phaser.Scene {
       obj.enableBody = true;
       obj.body.immovable = true;
 
-      if (name == "Star") {
+      if (name == "Star" || name == "Diamond") {
         if (sceneConfig.BigStarIDs.includes(object.id)) DEBUG("BIG STAR FOUND");
         else obj.setScale(obj.scale * 0.3);
       }
@@ -103,22 +94,27 @@ class GameScene extends Phaser.Scene {
       this.bug.player,
       this.objsGroup,
       (_player, _obj) => {
-        if (_obj.texture.key == "Star") {
-          audio_coin.play();
+        if (_obj.texture.key == "Star" || _obj.texture.key == "Diamond") {
+          audio_coin.play()
           _obj.destroy();
           this.score += 5;
+
+          if(_obj.texture.key == "Diamond") // 50 points for a diamond
+            this.score += 45
+
           this.scoreLabel.setText(`Score: ${this.score}`);
         } else if (_obj.texture.key == "Sign_01") {
           // not collidable
-        } else {
-          this.game_over = true;
-          this.stopGame();
+        }
+        else{
+          this.game_over = true
+          this.stopGame() 
           bg.pause();
           gameover.play();
-          this.scene.start("GameOverScene");
+          this.scene.start("GameOverScene"); 
         }
-      }
-    );
+    });
+
 
     this.scoreLabel = this.add
       .text(10, 10, "Score: 0", {
@@ -127,34 +123,33 @@ class GameScene extends Phaser.Scene {
         fill: "yellow",
       })
       .setScrollFactor(0);
+
+      const cam = this.cameras.main;
+      cam.startFollow(this.bug.player)
   }
 
   update() {
-    // this.tileLayer.x -= this.envSpeed;
-    // this.objLayerObjects.forEach((obj) => {
-    //   obj.x -= this.envSpeed;
-    // });
+
     if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
       this.startGame();
 
+
     this.bug.update();
 
-    if (this.hasGameStarted) {
-      const cam = this.cameras.main;
-      const speed = 4;
-      cam.scrollX += speed;
-    }
+    
   }
   startGame() {
-    if (this.game_over) return;
-    this.hasGameStarted = true;
-    this.bug.startGame();
-    this.envSpeed = sceneConfig.envSpeed;
-  }
+        if(this.game_over)
+            return
+        this.hasGameStarted = true
+        this.bug.startGame()
+    }
 
-  stopGame() {
-    this.sound.stopByKey("bg");
-    this.hasGameStarted = false;
-    this.bug.stopGame();
-  }
+
+    stopGame()
+    {
+        this.sound.stopByKey('bg');
+        this.hasGameStarted = false
+        this.bug.stopGame()
+    }
 }
