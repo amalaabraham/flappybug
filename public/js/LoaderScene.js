@@ -20,6 +20,12 @@ class LoadingScene extends Phaser.Scene {
     this.load.image("play_button", "../game/assets/play_button.png");
     this.load.image("options_button", "../game/assets/options_button.png");
 
+    // loads audio
+    this.load.audio("menu_audio", "../game/assets/audio/menu_audio.mp3");
+    this.load.audio("audio_coin", "../game/assets/audio/audio_coin.mp3");
+    this.load.audio("gameover_audio", "../game/assets/audio/gameover.wav");
+    this.load.audio("background_audio", "../game/assets/audio/background_audio.mp3");
+    
     this.load.spritesheet(
       "animation_sprite",
       "../game/assets/spritesheet2.png",

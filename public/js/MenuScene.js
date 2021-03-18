@@ -14,10 +14,7 @@ class MenuScene extends Phaser.Scene {
   {
     this.tilesets = data.tilesets;
   }
-  preload() {
-    this.load.audio("menu_audio", "../game/assets/audio/menu_audio.mp3");
-  }
-
+  
   create() {
     let menumusic = this.sound.add("menu_audio", { loop: true });
     menumusic.play();
