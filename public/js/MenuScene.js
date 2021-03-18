@@ -100,7 +100,7 @@ class MenuScene extends Phaser.Scene {
     });
 
     multiplayButton.on("pointerup", () => {
-      this.scene.start("WaitingScene");
+      this.scene.start("WaitingScene", {tilesets: this.tilesets} );
     });
 
     playButton.on("pointerover", () => {
@@ -116,7 +116,7 @@ class MenuScene extends Phaser.Scene {
 
     playButton.on("pointerup", () => {
       this.sound.stopByKey('menu_audio');
-      this.scene.start("GameScene", {tilesets: this.tilesets} );
+      this.scene.start("GameScene", {tilesets: this.tilesets, isMultiplayer: false, hasPriority: -1} );
     });
 
     menuButton.on("pointerover", () => {

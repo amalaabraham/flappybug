@@ -6,22 +6,31 @@ var BugConfig = {
 };
 
 class Bug {
-  constructor(scene, gameWidth, gameHeight) {
+  constructor(scene, gameWidth, gameHeight, hasPriority) {
     this.scene = scene;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.player = null;
     this.hasGameStarted = false;
+    this.hasPriority = hasPriority
   }
 
   render() {
+
+    let bugY = gameHeight / 2
+
+    if(this.scene.isMultiplayer) // set up y-position based on who was there first
+    {
+      if(this.hasPriority)
+        bugY /= 2
+    }
+    
     this.player = this.scene.physics.add.sprite(
       Math.floor(gameWidth / 2),
-      Math.floor(gameHeight / 2),
+      bugY,
       "bug"
     );
 
-    
     return this;
   }
 

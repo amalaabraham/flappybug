@@ -16,6 +16,14 @@ class GameScene extends Phaser.Scene {
         // scoring
         this.scoreLabel = null
         this.score = 0
+
+        // multiplayer part
+        this.isMultiplayer = false
+        this.hasPriority = false
+        this.opponentBug = null
+        this.opponentScore = 0
+        this.counter = 3 // count 3 -> 2 -> 1 then start game when on multiplayer
+        this.timer = null
     }
 
     getObjPropertyFromGid(gid, prop)
@@ -29,6 +37,8 @@ class GameScene extends Phaser.Scene {
   init(data)
   {
       this.tilesets = data.tilesets
+      this.isMultiplayer = data.isMultiplayer
+      this.hasPriority = data.hasPriority
   }
 
   create() {
@@ -59,12 +69,20 @@ class GameScene extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, width * 3000, height);
 
-    this.bug = new Bug(this, gameWidth, gameHeight);
+    this.bug = new Bug(this, gameWidth, gameHeight, this.hasPriority);
     this.bug.render();
     this.bug.player.setScale(0.7);
 
+    if(this.isMultiplayer)
+    {
+        this.opponentBug = new Bug(this, gameWidth, gameHeight, !this.hasPriority);
+        this.opponentBug.render();
+        this.opponentBug.player.setScale(0.7);
+    }
+
     this.input.keyboard.on("keydown-SPACE", (ev) => {
-      this.startGame();
+      if(!this.isMultiplayer)
+        this.startGame();
     });
 
     this.objsGroup = this.physics.add.group();
@@ -126,16 +144,39 @@ class GameScene extends Phaser.Scene {
 
       const cam = this.cameras.main;
       cam.startFollow(this.bug.player)
+
+      if(this.isMultiplayer)
+      {
+
+        this.countingLabel = this.add.text(gameWidth / 2, 
+            gameHeight / 2, 
+            `3`,
+            { fontSize: '20px', fontFamily: 'PS2P', align: 'center', fill: '#fff' 
+          })
+
+        this.timer = setInterval(() => {
+          this.counter--
+          if(this.counter <= 0)
+          {
+            this.countingLabel.destroy()
+            clearInterval(this.timer)
+            this.startGame()
+          }
+          else
+            this.countingLabel.setText(this.counter)
+        }, 1000);
+      }
   }
 
   update() {
 
-    if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
+    if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted && !this.isMultiplayer)
       this.startGame();
-
 
     this.bug.update();
 
+    if(this.isMultiplayer)
+      this.opponentBug.update();
     
   }
   startGame() {

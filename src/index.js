@@ -18,6 +18,21 @@ io.on('connection', socket => {
 
   playersEnv.addPlayer(player)
   
+  socket.on('waiting', msg => {
+      let matchedPlayer = playersEnv.whosAnyoneWaiting()
+      if(matchedPlayer == undefined)
+      {
+         // gotta wait bro
+        player.setWaiting()    
+      }
+      else
+      {
+          player.setPlaying()
+          socket.emit('found_player', {priority: false} );
+          matchedPlayer.socket.emit('found_player', {priority: true} );
+      }
+  });
+
   socket.on('disconnect', () => {
     playersEnv.dropPlayer(player.id)
   });
