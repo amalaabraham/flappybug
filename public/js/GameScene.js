@@ -42,6 +42,10 @@ class GameScene extends Phaser.Scene {
     this.hasGameStarted = false // Game Started?
     this.game_over = false
     
+    const width = this.scale.width;
+    const height = this.scale.height;
+    const totalWidth = width * 3000;
+
     const map = this.make.tilemap({ key: "env" });
 
     const groundLayer = map.addTilesetImage("Ground_02");
@@ -102,6 +106,7 @@ class GameScene extends Phaser.Scene {
       this.objsGroup,
       (_player, _obj) => {
         if (_obj.texture.key == "Star") {
+          audio_coin.play()
           _obj.destroy();
           this.score += 5;
           this.scoreLabel.setText(`Score: ${this.score}`);
