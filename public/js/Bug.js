@@ -20,9 +20,8 @@ class Bug {
       Math.floor(gameHeight / 2),
       "bug"
     );
-    this.player.body.setCollideWorldBounds(true);
-    this.player.body.onWorldBounds = true;
 
+    
     return this;
   }
 
@@ -30,6 +29,8 @@ class Bug {
     this.player.body.velocity.y = BugConfig.gravityVelocity;
     this.player.body.angularVelocity = BugConfig.gravityAngularVelocity;
     this.player.body.allowRotation = true;
+    this.player.body.velocity.x = 240;
+
   }
 
   startGame() {
@@ -74,5 +75,18 @@ class Bug {
     var pointer = this.scene.input.activePointer;
 
     if (pointer.leftButtonDown()) this.jump();
+
+    let y = this.player.body.y
+
+
+    let bottomLimit = 100
+
+    if(y < 0)
+        this.player.body.y = 0
+
+    if(y > ( gameHeight - bottomLimit ))
+        this.player.body.y = gameHeight - bottomLimit
+
+
   }
 }

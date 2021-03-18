@@ -122,8 +122,6 @@ class GameScene extends Phaser.Scene {
       this.objLayerObjects.push(obj);
     });
 
-    this.physics.add.collider(this.bug.player, this.objsGroup);
-
     this.physics.add.overlap(
       this.bug.player,
       this.objsGroup,
@@ -150,6 +148,10 @@ class GameScene extends Phaser.Scene {
         fill: "yellow",
       })
       .setScrollFactor(0);
+
+      // this.bug.player.setScrollFactor(0);
+
+      // cam.startFollow(this.bug.player);
   }
 
   update() {
@@ -157,15 +159,19 @@ class GameScene extends Phaser.Scene {
     // this.objLayerObjects.forEach((obj) => {
     //   obj.x -= this.envSpeed;
     // });
-    this.bug.update();
-    this.bug.player.setVelocityX(5);
-    this.bug.player.setScrollFactor(0);
     if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted)
       this.startGame();
 
-    const cam = this.cameras.main;
-    const speed = 4;
-    cam.scrollX += speed;
+    this.bug.update();
+
+    if(this.hasGameStarted)
+    {
+      const cam = this.cameras.main;
+      const speed = 4;
+      cam.scrollX += speed;
+    }
+
+    
   }
   startGame() {
     if (this.game_over) return;
