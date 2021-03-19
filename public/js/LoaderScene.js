@@ -26,6 +26,7 @@ class LoadingScene extends Phaser.Scene {
       "../game/Map/PNG/Background/Background_02.png"
     ); // gameover scene background
     this.load.image("bug", "../game/assets/fbug_01.png"); // bug
+    this.load.image("bug_opponent", "../game/assets/fbug_opponent.png");
     this.load.image("play_button", "../game/assets/play_button.png");
     this.load.image("multiplay_button", "../game/assets/multiplay.png");
 
