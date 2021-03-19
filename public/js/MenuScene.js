@@ -21,7 +21,7 @@ class MenuScene extends Phaser.Scene {
       .image(width * 0.5, height * 0.5, "sky")
       .setScrollFactor(0);
 
-    skyBg.scale = 0.6;
+    skyBg.scale = 0.69;
 
     createAligned(this, totalWidth, "mountain", 0.25);
     createAligned(this, totalWidth, "plateau", 0.5);
@@ -89,15 +89,27 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("WaitingScene", { tilesets: this.tilesets });
     });
 
-    var muteButton = this.add
-      .image(
-        this.game.renderer.width - 100,
-        this.game.renderer.height - 100,
-        "on"
-      )
-      .setDepth(1);
-    muteButton.setScrollFactor(0);
-    muteButton.setInteractive();
+    if (playMusic) {
+      var muteButton = this.add
+        .image(
+          this.game.renderer.width - 100,
+          this.game.renderer.height - 100,
+          "on"
+        )
+        .setDepth(1);
+      muteButton.setScrollFactor(0);
+      muteButton.setInteractive();
+    } else {
+      var muteButton = this.add
+        .image(
+          this.game.renderer.width - 100,
+          this.game.renderer.height - 100,
+          "off"
+        )
+        .setDepth(1);
+      muteButton.setScrollFactor(0);
+      muteButton.setInteractive();
+    }
 
     muteButton.on("pointerup", () => {
       try {
