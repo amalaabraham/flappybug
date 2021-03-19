@@ -24,6 +24,8 @@ class GameScene extends Phaser.Scene {
         this.opponentScore = 0
         this.counter = 3 // count 3 -> 2 -> 1 then start game when on multiplayer
         this.timer = null
+        this.opponentScore = 0
+        this.oponentScoreLabel = null
     }
 
     getObjPropertyFromGid(gid, prop)
@@ -121,6 +123,8 @@ class GameScene extends Phaser.Scene {
           if(_obj.texture.key == "Diamond") // 50 points for a diamond
             this.score += 45
 
+          socket.emit('score', this.score)
+          
           this.scoreLabel.setText(`Score: ${this.score}`);
         } else if (_obj.texture.key == "Sign_01") {
           // not collidable
@@ -171,6 +175,19 @@ class GameScene extends Phaser.Scene {
             this.opponentBug.jump()
             console.log('jump')
         })
+
+        socket.on('score', score => {
+            this.opponentScore = score
+            this.scoreLabel.setText(`Opp Score: ${score}`)
+        })
+
+        this.scoreLabel = this.add
+          .text(10, 40, "Opp Score: 0", {
+            fontSize: "20px",
+            fontFamily: "PS2P",
+            fill: "red",
+          })
+          .setScrollFactor(0);
       }
   }
 

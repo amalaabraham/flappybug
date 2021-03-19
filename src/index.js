@@ -29,6 +29,8 @@ io.on('connection', socket => {
       else
       {
           player.setPlaying()
+          matchedPlayer.setPlaying()
+
           socket.emit('found_player', {priority: false} );
           matchedPlayer.socket.emit('found_player', {priority: true} );
           
@@ -38,6 +40,14 @@ io.on('connection', socket => {
 
           matchedPlayer.socket.on('jump', msg => { // alert oponent when jump received
             socket.emit('jump', true);
+          })
+
+          socket.on('score', score => { // alert oponent when score updated
+            matchedPlayer.socket.emit('score', score);
+          })
+
+          matchedPlayer.socket.on('score', score => { // alert oponent when jump received
+            socket.emit('score', score);
           })
       }
   });
