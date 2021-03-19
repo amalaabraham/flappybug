@@ -11,11 +11,14 @@ module.exports = class Player {
     setWaiting(w)
     {
         this.isWaiting = w
+        if(w)
+            this.isPlaying = false
     }
 
     setPlaying(p)
     {
-        this.waiting = false
         this.isPlaying = p
+        if(p)
+            this.isWaiting = false
     }
 }

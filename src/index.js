@@ -12,26 +12,21 @@ app.use(express.static('public'));
 let playersEnv = new PlayersEnv()
 
 io.on('connection', socket => {
-
-
-  let player = new Player(socket, playersEnv.getAvailableId())
-  let matchedPlayer = null
-
-  playersEnv.addPlayer(player)
   
   socket.on('waiting', msg => {
+
+    let player = new Player(socket, playersEnv.getAvailableId())
+    let matchedPlayer = null
+    playersEnv.addPlayer(player)
+
       matchedPlayer = playersEnv.whosAnyoneWaiting()
       if(matchedPlayer == undefined)
       {
          // gotta wait bro
         player.setWaiting(true)  
-      console.log('No matched player')
-
       }
       else
       {
-          console.log('found player')
-
           player.setPlaying(true)
           matchedPlayer.setPlaying(true)
 
@@ -80,9 +75,6 @@ io.on('connection', socket => {
     player.setWaiting(false)
  })
 
-  socket.on('disconnect', () => {
-    playersEnv.dropPlayer(player.id)
-  });
 
 });
 
