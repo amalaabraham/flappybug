@@ -47,12 +47,12 @@ class GameScene extends Phaser.Scene {
     let gameover = this.sound.add("gameover_audio", { loop: false });
     let bg = this.sound.add("background_audio", { loop: true });
 
-    if(playMusic) {
-            bg.play();
+    if (playMusic) {
+      bg.play();
     }
-    this.hasGameStarted = false // Game Started?
-    this.game_over = false
-    
+    this.hasGameStarted = false; // Game Started?
+    this.game_over = false;
+
     const width = this.scale.width;
     const height = this.scale.height;
     const totalWidth = width * 3000;
@@ -64,7 +64,7 @@ class GameScene extends Phaser.Scene {
     const skyBg = this.add
       .image(width * 0.5, height * 0.5, "sky")
       .setScrollFactor(0);
-    skyBg.scale = 0.6;
+    skyBg.scale = 0.69;
 
     createAligned(this, totalWidth, "mountain", 0.25);
     createAligned(this, totalWidth, "plateau", 0.5);
@@ -121,8 +121,8 @@ class GameScene extends Phaser.Scene {
       this.objsGroup,
       (_player, _obj) => {
         if (_obj.texture.key == "Star" || _obj.texture.key == "Diamond") {
-          if(playMusic) {
-          audio_coin.play()
+          if (playMusic) {
+            audio_coin.play();
           }
           _obj.destroy();
           this.score += 5;
@@ -140,12 +140,11 @@ class GameScene extends Phaser.Scene {
           this.game_over = true;
           this.stopGame();
           bg.pause();
-          if (playMusic){
-          gameover.play();
+          if (playMusic) {
+            gameover.play();
           }
-          this.scene.start("GameOverScene"); 
-          socket.emit('collision', false)
-
+          this.scene.start("GameOverScene");
+          socket.emit("collision", false);
         }
       }
     );
