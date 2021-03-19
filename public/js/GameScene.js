@@ -121,7 +121,9 @@ class GameScene extends Phaser.Scene {
       this.objsGroup,
       (_player, _obj) => {
         if (_obj.texture.key == "Star" || _obj.texture.key == "Diamond") {
-          audio_coin.play();
+          if(playMusic) {
+          audio_coin.play()
+          }
           _obj.destroy();
           this.score += 5;
 
@@ -138,8 +140,9 @@ class GameScene extends Phaser.Scene {
           this.game_over = true;
           this.stopGame();
           bg.pause();
-          playMusic = true;
+          if (playMusic){
           gameover.play();
+          }
           this.scene.start("GameOverScene"); 
           socket.emit('collision', false)
 
