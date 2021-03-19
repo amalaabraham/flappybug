@@ -17,6 +17,11 @@ io.on('connection', socket => {
 
     let player = new Player(socket, playersEnv.getAvailableId())
     let matchedPlayer = null
+
+     socket.on('quit_waiting', _ => {
+      player.setWaiting(false)
+    })
+    
     playersEnv.addPlayer(player)
 
       matchedPlayer = playersEnv.whosAnyoneWaiting()
@@ -71,9 +76,7 @@ io.on('connection', socket => {
       }
   });
 
- socket.on('quit_waiting', _ => {
-    player.setWaiting(false)
- })
+
 
 
 });
