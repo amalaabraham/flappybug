@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="icon" href="./game/assets/fbug_01.png" />
+        <title>FlappyBug! a Multiplayer Geeky Version of FlappyBird</title>
+        <meta name="description" content="FlappyBug! a Multiplayer Geeky Version of FlappyBird">
+        <meta name="author" content="Amala-Hakeem-Benyam during the MLH Fellowship">
+        <link rel="stylesheet" href="css/index.css">
+        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+        <script src="//cdn.jsdelivr.net/npm/phaser@3.52.0/dist/phaser.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="js/Bug.js"></script>
+        <script src="js/game.js"></script>
+        <script src="js/GameScene.js"></script>
+        <script src="js/LoaderScene.js"></script>
+        <script src="js/MenuScene.js"></script>
+        <script src="js/GameOverScene.js"></script>
+        <script src="js/helper.js"></script>
+    </head>
+    <body>
+    <h1 class="hidden-p">Hidden</h1>
+        <nav>
+            <div>
+                <img src="./game/assets/fbug_01.png" id="nav-icon">
+                <div class="nav-fb-holder">
+                    <span class="nav-fb" id="nav-flappy">Flappy</span>
+                     <span class="nav-fb" id="nav-bug">Bug</span>
+                 </div>
+            </div>
+        </nav>
+        <br />
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            var socket = io();
+        </script>
+    </body>
+</html>
