@@ -17,12 +17,11 @@ $(() => {
   var config = {
     width: gameWidth,
     height: gameHeight,
-    backgroundColor: 0x000,
+    backgroundColor: 0x40eef2,
     physics: {
       default: "arcade",
       arcade: {
         gravity: { y: 0 },
-        
       },
     },
     scene: [LoadingScene, MenuScene, WaitingScene, GameScene, GameOverScene],

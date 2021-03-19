@@ -10,9 +10,9 @@ class MenuScene extends Phaser.Scene {
   init(data) {
     this.tilesets = data.tilesets;
   }
-  
+
   create() {
-    var image = "on"  
+    var image = "on";
     const width = this.scale.width;
     const height = this.scale.height;
     const totalWidth = width * 3000;
@@ -20,6 +20,7 @@ class MenuScene extends Phaser.Scene {
     const skyBg = this.add
       .image(width * 0.5, height * 0.5, "sky")
       .setScrollFactor(0);
+
     skyBg.scale = 0.6;
 
     createAligned(this, totalWidth, "mountain", 0.25);
@@ -30,8 +31,9 @@ class MenuScene extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, width * 3000, height);
 
     let menumusic = this.sound.add("menu_audio", { loop: true });
-    if(playMusic) {
-    menumusic.play();}
+    if (playMusic) {
+      menumusic.play();
+    }
 
     const animSprite = this.add
       .sprite(-100, -100, "animation_sprite")
@@ -88,41 +90,33 @@ class MenuScene extends Phaser.Scene {
     });
 
     var muteButton = this.add
-    .image(
-      this.game.renderer.width - 100,
-      this.game.renderer.height - 100,
-      "on"
-    )
-    .setDepth(1);
+      .image(
+        this.game.renderer.width - 100,
+        this.game.renderer.height - 100,
+        "on"
+      )
+      .setDepth(1);
     muteButton.setScrollFactor(0);
     muteButton.setInteractive();
 
     muteButton.on("pointerup", () => {
       try {
-      if(playMusic) {
-        playMusic= false
-        this.sound.stopByKey('menu_audio');
-         muteButton
-         .setTexture(  
-            "off"
-      )
-      .setDepth(1);
-       muteButton.setScrollFactor(0);
-       muteButton.setInteractive();
+        if (playMusic) {
+          playMusic = false;
+          this.sound.stopByKey("menu_audio");
+          muteButton.setTexture("off").setDepth(1);
+          muteButton.setScrollFactor(0);
+          muteButton.setInteractive();
+        } else {
+          playMusic = true;
+          muteButton.setTexture("on").setDepth(1);
+          muteButton.setScrollFactor(0);
+          muteButton.setInteractive();
+          menumusic.play();
+        }
+      } catch (e) {
+        DEBUG(e);
       }
-    
-      else {
-        playMusic=true;
-        muteButton
-        .setTexture(
-              "on"
-         )
-        .setDepth(1);
-        muteButton.setScrollFactor(0);
-        muteButton.setInteractive();
-         menumusic.play()
-      } }catch(e)
-      {DEBUG(e)}     
     });
 
     playButton.on("pointerover", () => {
@@ -145,7 +139,6 @@ class MenuScene extends Phaser.Scene {
       animSprite.setVisible(false);
     });
   }
-
 
   update() {
     const cam = this.cameras.main;
