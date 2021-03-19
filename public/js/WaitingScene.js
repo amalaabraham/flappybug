@@ -25,6 +25,7 @@ class WaitingScene extends Phaser.Scene{
        
         backLabel.on('pointerup', () => {
             this.scene.start("MenuScene", {tilesets: this.tilesets} );
+            socket.emit('quit_waiting', true)
         })
 
         socket.on('found_player', data => {

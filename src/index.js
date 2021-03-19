@@ -52,15 +52,29 @@ io.on('connection', socket => {
 
           socket.on('collision', _ => { // alert oponent when score updated
             matchedPlayer.socket.emit('collision', _);
-            player.setPlaying(false)
+            playersEnv.dropPlayer(player.id)
           })
 
           matchedPlayer.socket.on('collision', _ => { // alert oponent when jump received
             socket.emit('collision', _);
-            matchedPlayer.setPlaying(false)
+            playersEnv.dropPlayer(matchedPlayer.id)
+          })
+
+          socket.on('disconnect', _ => { // alert oponent when score updated
+            matchedPlayer.socket.emit('collision', _);
+            playersEnv.dropPlayer(player.id)
+          })
+
+          matchedPlayer.socket.on('disconnect', _ => { // alert oponent when jump received
+            socket.emit('collision', _);
+            playersEnv.dropPlayer(matchedPlayer.id)
           })
       }
   });
+
+ socket.on('quit_waiting', _ => {
+    player.setWaiting(false)
+ })
 
   socket.on('disconnect', () => {
     playersEnv.dropPlayer(player.id)

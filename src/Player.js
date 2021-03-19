@@ -15,6 +15,7 @@ module.exports = class Player {
 
     setPlaying(p)
     {
+        this.waiting = false
         this.isPlaying = p
     }
 }

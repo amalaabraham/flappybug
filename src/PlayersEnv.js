@@ -17,7 +17,7 @@ module.exports = class PlayersEnv {
         {
             let id = this.IDs[i]
             let player = this.players[id]
-            if(player.isWaiting)
+            if(player.isWaiting && !player.isPlaying)
             {
                 player.setPlaying(true)
                 return player
