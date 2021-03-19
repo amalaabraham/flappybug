@@ -1,15 +1,13 @@
 class MenuScene extends Phaser.Scene {
-
   constructor() {
     super({
       key: "MenuScene",
     });
 
-    this.tilesets = null
+    this.tilesets = null;
   }
-  
-  init(data)
-  {
+
+  init(data) {
     this.tilesets = data.tilesets;
   }
   
@@ -35,7 +33,6 @@ class MenuScene extends Phaser.Scene {
     let menumusic = this.sound.add("menu_audio", { loop: true });
     if(playMusic) {
     menumusic.play();}
-
 
     const animSprite = this.add
       .sprite(-100, -100, "animation_sprite")
@@ -63,7 +60,6 @@ class MenuScene extends Phaser.Scene {
 
     playButton.setInteractive();
 
-
     const multiplayButton = this.add
       .image(
         this.game.renderer.width / 2,
@@ -73,9 +69,8 @@ class MenuScene extends Phaser.Scene {
       .setDepth(1);
 
     multiplayButton.setInteractive();
+    multiplayButton.setScale(0.5);
 
-
-    multiplayButton.setScale(0.7)
     multiplayButton.setScrollFactor(0);
 
     multiplayButton.on("pointerover", () => {
@@ -86,11 +81,11 @@ class MenuScene extends Phaser.Scene {
     });
 
     multiplayButton.on("pointerout", () => {
-        animSprite.setVisible(false);
+      animSprite.setVisible(false);
     });
 
     multiplayButton.on("pointerup", () => {
-      this.scene.start("WaitingScene", {tilesets: this.tilesets} );
+      this.scene.start("WaitingScene", { tilesets: this.tilesets });
     });
 
     var muteButton = this.add
@@ -141,16 +136,18 @@ class MenuScene extends Phaser.Scene {
       animSprite.play("flap");
     });
 
-
     playButton.on("pointerup", () => {
-      this.sound.stopByKey('menu_audio');
-      this.scene.start("GameScene", {tilesets: this.tilesets, isMultiplayer: false, hasPriority: -1} );
+      this.sound.stopByKey("menu_audio");
+      this.scene.start("GameScene", {
+        tilesets: this.tilesets,
+        isMultiplayer: false,
+        hasPriority: -1,
+      });
     });
 
     playButton.on("pointerout", () => {
       animSprite.setVisible(false);
     });
-
   }
 
 

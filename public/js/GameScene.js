@@ -4,44 +4,42 @@ var sceneConfig = {
 
 class GameScene extends Phaser.Scene {
   constructor() {
-        super("GameScene");
-        this.objLayer = null; // Json array includes all objects except player
-        this.objLayerObjects = [] // include all physical objects
-        this.hasGameStarted = false // Game Started?
-        this.game_over = false
-        this.bug = null // Bug Player
-        this.objsGroup = null
-        this.tilesets = null
+    super("GameScene");
+    this.objLayer = null; // Json array includes all objects except player
+    this.objLayerObjects = []; // include all physical objects
+    this.hasGameStarted = false; // Game Started?
+    this.game_over = false;
+    this.bug = null; // Bug Player
+    this.objsGroup = null;
+    this.tilesets = null;
 
-        // scoring
-        this.scoreLabel = null
-        this.score = 0
+    // scoring
+    this.scoreLabel = null;
+    this.score = 0;
 
-        // multiplayer part
-        this.isMultiplayer = false
-        this.hasPriority = false
-        this.opponentBug = null
-        this.opponentScore = 0
-        this.counter = 3 // count 3 -> 2 -> 1 then start game when on multiplayer
-        this.timer = null
-        this.opponentScore = 0
-        this.oponentScoreLabel = null
-        this.opponentHasLost = false
+    // multiplayer part
+    this.isMultiplayer = false;
+    this.hasPriority = false;
+    this.opponentBug = null;
+    this.opponentScore = 0;
+    this.counter = 3; // count 3 -> 2 -> 1 then start game when on multiplayer
+    this.timer = null;
+    this.opponentScore = 0;
+    this.oponentScoreLabel = null;
+    this.opponentHasLost = false;
+  }
+
+  getObjPropertyFromGid(gid, prop) {
+    for (let i = 0; i < this.tilesets.length; i++) {
+      let obj = this.tilesets[i];
+      if (obj.gid == gid) return obj[prop];
     }
+  }
 
-    getObjPropertyFromGid(gid, prop)
-    {
-      for (let i = 0; i < this.tilesets.length; i++) {
-        let obj = this.tilesets[i];
-        if (obj.gid == gid) return obj[prop];
-      }
-    }
-
-  init(data)
-  {
-      this.tilesets = data.tilesets
-      this.isMultiplayer = data.isMultiplayer
-      this.hasPriority = data.hasPriority
+  init(data) {
+    this.tilesets = data.tilesets;
+    this.isMultiplayer = data.isMultiplayer;
+    this.hasPriority = data.hasPriority;
   }
 
   create() {
@@ -79,16 +77,20 @@ class GameScene extends Phaser.Scene {
     this.bug.render();
     this.bug.player.setScale(0.7);
 
-    if(this.isMultiplayer)
-    {
-        this.opponentBug = new Bug(this, gameWidth, gameHeight, !this.hasPriority, true);
-        this.opponentBug.render();
-        this.opponentBug.player.setScale(0.7);
+    if (this.isMultiplayer) {
+      this.opponentBug = new Bug(
+        this,
+        gameWidth,
+        gameHeight,
+        !this.hasPriority,
+        true
+      );
+      this.opponentBug.render();
+      this.opponentBug.player.setScale(0.7);
     }
 
     this.input.keyboard.on("keydown-SPACE", (ev) => {
-      if(!this.isMultiplayer)
-        this.startGame();
+      if (!this.isMultiplayer) this.startGame();
     });
 
     this.objsGroup = this.physics.add.group();
@@ -104,8 +106,7 @@ class GameScene extends Phaser.Scene {
       obj.body.immovable = true;
 
       if (name == "Star" || name == "Diamond") {
-        if (sceneConfig.BigStarIDs.includes(object.id)) 
-          DEBUG("BIG STAR FOUND");
+        if (sceneConfig.BigStarIDs.includes(object.id)) DEBUG("BIG STAR FOUND");
         else obj.setScale(obj.scale * 0.3);
       }
 
@@ -126,28 +127,28 @@ class GameScene extends Phaser.Scene {
           _obj.destroy();
           this.score += 5;
 
-          if(_obj.texture.key == "Diamond") // 50 points for a diamond
-            this.score += 45
+          if (_obj.texture.key == "Diamond")
+            // 50 points for a diamond
+            this.score += 45;
 
-          socket.emit('score', this.score)
+          socket.emit("score", this.score);
 
           this.scoreLabel.setText(`Score: ${this.score}`);
         } else if (_obj.texture.key == "Sign_01") {
           // not collidable
-        }
-        else{
-          this.game_over = true
-          this.stopGame() 
+        } else {
+          this.game_over = true;
+          this.stopGame();
           bg.pause();
           if (playMusic){
           gameover.play();
           }
-          playMusic = true;
           this.scene.start("GameOverScene"); 
           socket.emit('collision', false)
-        }
-    });
 
+        }
+      }
+    );
 
     this.scoreLabel = this.add
       .text(10, 10, "Score: 0", {
@@ -157,84 +158,77 @@ class GameScene extends Phaser.Scene {
       })
       .setScrollFactor(0);
 
-      const cam = this.cameras.main;
-      cam.startFollow(this.bug.player)
+    const cam = this.cameras.main;
+    cam.startFollow(this.bug.player);
 
-      if(this.isMultiplayer)
-      {
+    if (this.isMultiplayer) {
+      this.countingLabel = this.add.text(gameWidth / 2, gameHeight / 2, `3`, {
+        fontSize: "20px",
+        fontFamily: "PS2P",
+        align: "center",
+        fill: "#fff",
+      });
 
-        this.countingLabel = this.add.text(gameWidth / 2, 
-            gameHeight / 2, 
-            `3`,
-            { fontSize: '20px', fontFamily: 'PS2P', align: 'center', fill: '#fff' 
-          })
+      this.timer = setInterval(() => {
+        this.counter--;
+        if (this.counter <= 0) {
+          this.countingLabel.destroy();
+          clearInterval(this.timer);
+          this.startGame();
+        } else this.countingLabel.setText(this.counter);
+      }, 1000);
 
-        this.timer = setInterval(() => {
-          this.counter--
-          if(this.counter <= 0)
-          {
-            this.countingLabel.destroy()
-            clearInterval(this.timer)
-            this.startGame()
-          }
-          else
-            this.countingLabel.setText(this.counter)
-        }, 1000);
+      socket.on("jump", (data) => {
+        this.opponentBug.jump();
+      });
 
-        socket.on('jump', data => {
-            this.opponentBug.jump()
+      socket.on("score", (score) => {
+        this.opponentScore = score;
+        this.opponentScoreLabel.setText(`Opp Score: ${score}`);
+      });
+
+      socket.on("collision", (_) => {
+        this.opponentHasLost = true;
+        this.opponentBug.player.destroy();
+        this.opponentScoreLabel.setText(`Lost: ${this.opponentScore}`);
+      });
+
+      this.opponentScoreLabel = this.add
+        .text(10, 40, "Opp Score: 0", {
+          fontSize: "20px",
+          fontFamily: "PS2P",
+          fill: "red",
         })
-
-        socket.on('score', score => {
-            this.opponentScore = score
-            this.opponentScoreLabel.setText(`Opp Score: ${score}`)
-        })
-
-        socket.on('collision', _ => {
-            this.opponentHasLost = true
-            this.opponentBug.player.destroy()
-            this.opponentScoreLabel.setText(`Lost: ${this.opponentScore}`)
-        })
-
-        this.opponentScoreLabel = this.add
-          .text(10, 40, "Opp Score: 0", {
-            fontSize: "20px",
-            fontFamily: "PS2P",
-            fill: "red",
-          })
-          .setScrollFactor(0);
-      }
+        .setScrollFactor(0);
+    }
   }
 
   update() {
-
-    if (this.input.activePointer.leftButtonDown() && !this.hasGameStarted && !this.isMultiplayer)
+    if (
+      this.input.activePointer.leftButtonDown() &&
+      !this.hasGameStarted &&
+      !this.isMultiplayer
+    )
       this.startGame();
 
     this.bug.update();
 
-    if(this.isMultiplayer && !this.opponentHasLost)
-      this.opponentBug.update();
-    
+    if (this.isMultiplayer && !this.opponentHasLost) this.opponentBug.update();
   }
   startGame() {
-        if(this.game_over)
-            return
-        this.hasGameStarted = true
-        this.bug.startGame()
+    if (this.game_over) return;
+    this.hasGameStarted = true;
+    this.bug.startGame();
 
-        if(this.isMultiplayer)
-          this.opponentBug.startGame()
-    }
+    if (this.isMultiplayer) this.opponentBug.startGame();
+  }
 
+  stopGame() {
+    this.sound.stopByKey("bg");
+    this.hasGameStarted = false;
+    this.bug.stopGame();
 
-    stopGame()
-    {
-        this.sound.stopByKey('bg');
-        this.hasGameStarted = false
-        this.bug.stopGame()
-
-        if(this.isMultiplayer && !this.opponentHasLost)
-          this.opponentBug.stopGame()
-    }
+    if (this.isMultiplayer && !this.opponentHasLost)
+      this.opponentBug.stopGame();
+  }
 }
