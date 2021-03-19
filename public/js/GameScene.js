@@ -46,10 +46,13 @@ class GameScene extends Phaser.Scene {
     let audio_coin = this.sound.add("audio_coin", { loop: false });
     let gameover = this.sound.add("gameover_audio", { loop: false });
     let bg = this.sound.add("background_audio", { loop: true });
-    bg.play();
-    this.hasGameStarted = false; // Game Started?
-    this.game_over = false;
 
+    if(playMusic) {
+            bg.play();
+    }
+    this.hasGameStarted = false // Game Started?
+    this.game_over = false
+    
     const width = this.scale.width;
     const height = this.scale.height;
     const totalWidth = width * 3000;
@@ -135,9 +138,11 @@ class GameScene extends Phaser.Scene {
           this.game_over = true;
           this.stopGame();
           bg.pause();
+          playMusic = true;
           gameover.play();
-          this.scene.start("GameOverScene", this.score);
-          socket.emit("collision", false);
+          this.scene.start("GameOverScene"); 
+          socket.emit('collision', false)
+
         }
       }
     );
