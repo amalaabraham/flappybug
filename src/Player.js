@@ -4,6 +4,18 @@ module.exports = class Player {
     {
         this.socket = _scoket
         this.id = _id
+        this.isWaiting = false
+        this.isPlaying = false
     }
 
+    setWaiting(w)
+    {
+        this.isWaiting = w
+    }
+
+    setPlaying(p)
+    {
+        this.waiting = false
+        this.isPlaying = p
+    }
 }

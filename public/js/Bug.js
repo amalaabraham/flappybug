@@ -6,22 +6,32 @@ var BugConfig = {
 };
 
 class Bug {
-  constructor(scene, gameWidth, gameHeight) {
+  constructor(scene, gameWidth, gameHeight, hasPriority, isOpponent) {
     this.scene = scene;
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
     this.player = null;
     this.hasGameStarted = false;
+    this.hasPriority = hasPriority
+    this.isOpponent = isOpponent
   }
 
   render() {
+
+    let bugY = gameHeight / 2
+
+    if(this.scene.isMultiplayer) // set up y-position based on who was there first
+    {
+      if(this.hasPriority)
+        bugY /= 2
+    }
+
     this.player = this.scene.physics.add.sprite(
       Math.floor(gameWidth / 2),
-      Math.floor(gameHeight / 2),
+      bugY,
       "bug"
     );
 
-    
     return this;
   }
 
@@ -58,9 +68,14 @@ class Bug {
       this.player.body.angularVelocity = BugConfig.gravityAngularVelocity;
     }, 260);
   }
+
   setListeners() {
     this.scene.input.keyboard.on("keydown-SPACE", (ev) => {
-      this.jump();
+      if(!this.isOpponent)
+      {
+        this.alertOponentOfJump()
+        this.jump();
+      }
     });
   }
 
@@ -74,7 +89,14 @@ class Bug {
 
     var pointer = this.scene.input.activePointer;
 
-    if (pointer.leftButtonDown()) this.jump();
+    if (pointer.leftButtonDown()) 
+    {
+      if(!this.isOpponent)
+      {
+        this.alertOponentOfJump()
+        this.jump();
+      }
+    }
 
     let y = this.player.body.y
 
@@ -87,6 +109,14 @@ class Bug {
     if(y > ( gameHeight - bottomLimit ))
         this.player.body.y = gameHeight - bottomLimit
 
-
   }
+
+  alertOponentOfJump()
+  {
+      if(this.scene.isMultiplayer)
+      {
+          socket.emit('jump', true);
+      }
+  }
+
 }

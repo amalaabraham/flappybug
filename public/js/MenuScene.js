@@ -1,7 +1,5 @@
 class MenuScene extends Phaser.Scene {
 
-  
-
   constructor() {
     super({
       key: "MenuScene",
@@ -61,19 +59,37 @@ class MenuScene extends Phaser.Scene {
       .setDepth(1);
     playButton.setScrollFactor(0);
 
-    // playButton.setScale(0.8);
-    const menuButton = this.add
+    playButton.setInteractive();
+
+
+    const multiplayButton = this.add
       .image(
         this.game.renderer.width / 2,
-        this.game.renderer.height / 2 + 100,
-        "options_button"
+        this.game.renderer.height / 2 - 100,
+        "multiplay_button"
       )
       .setDepth(1);
-    menuButton.setScrollFactor(0);
 
-    menuButton.setScale(1.1);
-    playButton.setInteractive();
-    menuButton.setInteractive();
+    multiplayButton.setInteractive();
+
+    
+    multiplayButton.setScale(0.7)
+    multiplayButton.setScrollFactor(0);
+
+    multiplayButton.on("pointerover", () => {
+      animSprite.setVisible(true);
+      animSprite.x = multiplayButton.x - multiplayButton.width / 2 - 10;
+      animSprite.y = multiplayButton.y;
+      animSprite.play("flap");
+    });
+
+    multiplayButton.on("pointerout", () => {
+        animSprite.setVisible(false);
+    });
+
+    multiplayButton.on("pointerup", () => {
+      this.scene.start("WaitingScene", {tilesets: this.tilesets} );
+    });
 
     playButton.on("pointerover", () => {
       animSprite.setVisible(true);
@@ -82,30 +98,16 @@ class MenuScene extends Phaser.Scene {
       animSprite.play("flap");
     });
 
-    menuButton.on("pointerout", () => {
-      animSprite.setVisible(false);
-    });
 
     playButton.on("pointerup", () => {
       this.sound.stopByKey('menu_audio');
-      this.scene.start("GameScene", {tilesets: this.tilesets} );
-    });
-
-    menuButton.on("pointerover", () => {
-      animSprite.setVisible(true);
-      animSprite.x = menuButton.x - menuButton.width;
-      animSprite.y = menuButton.y;
-
-      animSprite.play("flap");
+      this.scene.start("GameScene", {tilesets: this.tilesets, isMultiplayer: false, hasPriority: -1} );
     });
 
     playButton.on("pointerout", () => {
       animSprite.setVisible(false);
     });
 
-    menuButton.on("pointerup", () => {
-      //   todo
-    });
   }
 
   update() {

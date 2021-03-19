@@ -22,7 +22,7 @@ $(() => {
         gravity: { y: 0 },
       },
     },
-    scene: [LoadingScene, MenuScene, GameScene, GameOverScene],
+    scene: [LoadingScene, MenuScene, WaitingScene, GameScene, GameOverScene],
   };
 
   game = new Phaser.Game(config);

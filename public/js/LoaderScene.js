@@ -21,10 +21,12 @@ class LoadingScene extends Phaser.Scene {
     this.load.image("ground", "../game/assets/ground.png");
     this.load.image("plants", "../game/assets/plant.png");
 
+
     this.load.image( "go_background", "../game/Map/PNG/Background/Background_02.png"); // gameover scene background
     this.load.image("bug", "../game/assets/fbug_01.png"); // bug
     this.load.image("play_button", "../game/assets/play_button.png");
-    this.load.image("options_button", "../game/assets/options_button.png");
+    this.load.image("multiplay_button", "../game/assets/multiplay.png");
+
 
     // loads audio
     this.load.audio("menu_audio", "../game/assets/audio/menu_audio.mp3");
