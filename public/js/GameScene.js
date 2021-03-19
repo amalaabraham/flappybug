@@ -69,13 +69,13 @@ class GameScene extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, width * 3000, height);
 
-    this.bug = new Bug(this, gameWidth, gameHeight, this.hasPriority);
+    this.bug = new Bug(this, gameWidth, gameHeight, this.hasPriority, false);
     this.bug.render();
     this.bug.player.setScale(0.7);
 
     if(this.isMultiplayer)
     {
-        this.opponentBug = new Bug(this, gameWidth, gameHeight, !this.hasPriority);
+        this.opponentBug = new Bug(this, gameWidth, gameHeight, !this.hasPriority, true);
         this.opponentBug.render();
         this.opponentBug.player.setScale(0.7);
     }
@@ -98,7 +98,8 @@ class GameScene extends Phaser.Scene {
       obj.body.immovable = true;
 
       if (name == "Star" || name == "Diamond") {
-        if (sceneConfig.BigStarIDs.includes(object.id)) DEBUG("BIG STAR FOUND");
+        if (sceneConfig.BigStarIDs.includes(object.id)) 
+          DEBUG("BIG STAR FOUND");
         else obj.setScale(obj.scale * 0.3);
       }
 
@@ -165,6 +166,11 @@ class GameScene extends Phaser.Scene {
           else
             this.countingLabel.setText(this.counter)
         }, 1000);
+
+        socket.on('jump', data => {
+            this.opponentBug.jump()
+            console.log('jump')
+        })
       }
   }
 
@@ -184,6 +190,9 @@ class GameScene extends Phaser.Scene {
             return
         this.hasGameStarted = true
         this.bug.startGame()
+
+        if(this.isMultiplayer)
+          this.opponentBug.startGame()
     }
 
 
@@ -192,5 +201,8 @@ class GameScene extends Phaser.Scene {
         this.sound.stopByKey('bg');
         this.hasGameStarted = false
         this.bug.stopGame()
+
+        if(this.isMultiplayer)
+          this.opponentBug.stopGame()
     }
 }

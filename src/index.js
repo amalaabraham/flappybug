@@ -15,11 +15,12 @@ io.on('connection', socket => {
 
 
   let player = new Player(socket, playersEnv.getAvailableId())
+  let matchedPlayer = null
 
   playersEnv.addPlayer(player)
   
   socket.on('waiting', msg => {
-      let matchedPlayer = playersEnv.whosAnyoneWaiting()
+      matchedPlayer = playersEnv.whosAnyoneWaiting()
       if(matchedPlayer == undefined)
       {
          // gotta wait bro
@@ -30,6 +31,14 @@ io.on('connection', socket => {
           player.setPlaying()
           socket.emit('found_player', {priority: false} );
           matchedPlayer.socket.emit('found_player', {priority: true} );
+          
+          socket.on('jump', msg => { // alert oponent when jump received
+            matchedPlayer.socket.emit('jump', true);
+          })
+
+          matchedPlayer.socket.on('jump', msg => { // alert oponent when jump received
+            socket.emit('jump', true);
+          })
       }
   });
 
