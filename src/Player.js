@@ -8,13 +8,13 @@ module.exports = class Player {
         this.isPlaying = false
     }
 
-    setWaiting()
+    setWaiting(w)
     {
-        this.isWaiting = true
+        this.isWaiting = w
     }
 
-    setPlaying()
+    setPlaying(p)
     {
-        this.isPlaying = true
+        this.isPlaying = p
     }
 }

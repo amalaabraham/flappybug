@@ -19,7 +19,7 @@ module.exports = class PlayersEnv {
             let player = this.players[id]
             if(player.isWaiting)
             {
-                player.setPlaying()
+                player.setPlaying(true)
                 return player
             }
         }
@@ -41,7 +41,6 @@ module.exports = class PlayersEnv {
 
     dropPlayer(_id)
     {
-        console.log(`Player with ID ${_id} disconnected`);
         delete(this.players[_id])
         this.currentPlayers--
         this.IDs.splice(this.IDs.indexOf(_id), 1)

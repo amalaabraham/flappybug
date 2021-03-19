@@ -26,6 +26,7 @@ class GameScene extends Phaser.Scene {
         this.timer = null
         this.opponentScore = 0
         this.oponentScoreLabel = null
+        this.opponentHasLost = false
     }
 
     getObjPropertyFromGid(gid, prop)
@@ -124,7 +125,7 @@ class GameScene extends Phaser.Scene {
             this.score += 45
 
           socket.emit('score', this.score)
-          
+
           this.scoreLabel.setText(`Score: ${this.score}`);
         } else if (_obj.texture.key == "Sign_01") {
           // not collidable
@@ -135,6 +136,7 @@ class GameScene extends Phaser.Scene {
           bg.pause();
           gameover.play();
           this.scene.start("GameOverScene"); 
+          socket.emit('collision', false)
         }
     });
 
@@ -173,15 +175,20 @@ class GameScene extends Phaser.Scene {
 
         socket.on('jump', data => {
             this.opponentBug.jump()
-            console.log('jump')
         })
 
         socket.on('score', score => {
             this.opponentScore = score
-            this.scoreLabel.setText(`Opp Score: ${score}`)
+            this.opponentScoreLabel.setText(`Opp Score: ${score}`)
         })
 
-        this.scoreLabel = this.add
+        socket.on('collision', _ => {
+            this.opponentHasLost = true
+            this.opponentBug.player.destroy()
+            this.opponentScoreLabel.setText(`Lost sc: ${this.opponentScore}`)
+        })
+
+        this.opponentScoreLabel = this.add
           .text(10, 40, "Opp Score: 0", {
             fontSize: "20px",
             fontFamily: "PS2P",
@@ -198,7 +205,7 @@ class GameScene extends Phaser.Scene {
 
     this.bug.update();
 
-    if(this.isMultiplayer)
+    if(this.isMultiplayer && !this.opponentHasLost)
       this.opponentBug.update();
     
   }
@@ -219,7 +226,7 @@ class GameScene extends Phaser.Scene {
         this.hasGameStarted = false
         this.bug.stopGame()
 
-        if(this.isMultiplayer)
+        if(this.isMultiplayer && !this.opponentHasLost)
           this.opponentBug.stopGame()
     }
 }

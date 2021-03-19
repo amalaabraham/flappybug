@@ -24,12 +24,12 @@ io.on('connection', socket => {
       if(matchedPlayer == undefined)
       {
          // gotta wait bro
-        player.setWaiting()    
+        player.setWaiting(true)    
       }
       else
       {
-          player.setPlaying()
-          matchedPlayer.setPlaying()
+          player.setPlaying(true)
+          matchedPlayer.setPlaying(true)
 
           socket.emit('found_player', {priority: false} );
           matchedPlayer.socket.emit('found_player', {priority: true} );
@@ -48,6 +48,16 @@ io.on('connection', socket => {
 
           matchedPlayer.socket.on('score', score => { // alert oponent when jump received
             socket.emit('score', score);
+          })
+
+          socket.on('collision', _ => { // alert oponent when score updated
+            matchedPlayer.socket.emit('collision', _);
+            player.setPlaying(false)
+          })
+
+          matchedPlayer.socket.on('collision', _ => { // alert oponent when jump received
+            socket.emit('collision', _);
+            matchedPlayer.setPlaying(false)
           })
       }
   });
