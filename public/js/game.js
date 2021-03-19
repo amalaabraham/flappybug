@@ -22,6 +22,7 @@ $(() => {
       default: "arcade",
       arcade: {
         gravity: { y: 0 },
+        // debug: true,
       },
     },
     scene: [LoadingScene, MenuScene, WaitingScene, GameScene, GameOverScene],

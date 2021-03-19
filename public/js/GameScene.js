@@ -47,6 +47,8 @@ class GameScene extends Phaser.Scene {
     let gameover = this.sound.add("gameover_audio", { loop: false });
     let bg = this.sound.add("background_audio", { loop: true });
 
+    this.score = 0;
+
     if (playMusic) {
       bg.play();
     }
