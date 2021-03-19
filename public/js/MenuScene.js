@@ -13,7 +13,8 @@ class MenuScene extends Phaser.Scene {
     this.tilesets = data.tilesets;
   }
   
-  create() {  
+  create() {
+    var image = "on"  
     const width = this.scale.width;
     const height = this.scale.height;
     const totalWidth = width * 3000;
@@ -50,16 +51,6 @@ class MenuScene extends Phaser.Scene {
         frames: [0, 1],
       }),
     });
-
-    const muteButton = this.add
-      .image(
-        this.game.renderer.width - 100,
-        this.game.renderer.height - 100,
-        "mute"
-      )
-      .setDepth(1);
-      muteButton.setScrollFactor(0);
-      muteButton.setInteractive();
 
     const playButton = this.add
       .image(
@@ -102,14 +93,45 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("WaitingScene", {tilesets: this.tilesets} );
     });
 
+    var muteButton = this.add
+    .image(
+      this.game.renderer.width - 100,
+      this.game.renderer.height - 100,
+      "on"
+    )
+    .setDepth(1);
+    muteButton.setScrollFactor(0);
+    muteButton.setInteractive();
+
     muteButton.on("pointerup", () => {
+      console.log("function works")
       if(playMusic) {
-        this.sound.stopByKey('menu_audio');
         playMusic= false
+        this.sound.stopByKey('menu_audio');
+      //    muteButton = this.add
+      //   .image(
+      //     this.game.renderer.width - 100,
+      //     this.game.renderer.height - 100,
+      //     "off"
+      // )
+      // .setDepth(1);
+      //  muteButton.setScrollFactor(0);
+      //  muteButton.setInteractive();
+        console.log(playMusic)
       }
       else {
         playMusic=true;
-        menumusic.play()
+        // muteButton = this.add
+        // .image(
+        // this.game.renderer.width - 100,
+        // this.game.renderer.height - 100,
+        // "on"
+        //  )
+        // .setDepth(1);
+        // muteButton.setScrollFactor(0);
+        // muteButton.setInteractive();
+         menumusic.play()
+        console.log(playMusic)
       }      
     });
 
@@ -131,6 +153,7 @@ class MenuScene extends Phaser.Scene {
     });
 
   }
+
 
   update() {
     const cam = this.cameras.main;

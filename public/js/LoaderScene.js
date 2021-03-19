@@ -26,7 +26,8 @@ class LoadingScene extends Phaser.Scene {
     this.load.image("bug", "../game/assets/fbug_01.png"); // bug
     this.load.image("play_button", "../game/assets/play_button.png");
     this.load.image("multiplay_button", "../game/assets/multiplay.png");
-    this.load.image("mute", "../game/assets/mute.png");
+    this.load.image("on", "../game/assets/on.png");
+    this.load.image("off", "../game/assets/off.png");
 
 
     // loads audio
