@@ -20,6 +20,13 @@ class WaitingScene extends Phaser.Scene{
         label.setOrigin(0.5, 0.5)
         socket.emit('waiting', true);
 
+        let backLabel = this.add.text(10, gameHeight - 30, "<- Back", { fontSize: '15px', fontFamily: 'PS2P', align: 'center', fill: '#fff' }).setDepth(1)
+        backLabel.setInteractive({useHandCursor: true})
+       
+        backLabel.on('pointerup', () => {
+            this.scene.start("MenuScene", {tilesets: this.tilesets} );
+        })
+
         socket.on('found_player', data => {
             this.scene.start("GameScene", {hasPriority: data.priority, isMultiplayer: true, tilesets: this.tilesets} );
         })
