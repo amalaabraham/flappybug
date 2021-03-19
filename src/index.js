@@ -24,10 +24,14 @@ io.on('connection', socket => {
       if(matchedPlayer == undefined)
       {
          // gotta wait bro
-        player.setWaiting(true)    
+        player.setWaiting(true)  
+      console.log('No matched player')
+
       }
       else
       {
+          console.log('found player')
+
           player.setPlaying(true)
           matchedPlayer.setPlaying(true)
 

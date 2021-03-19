@@ -16,7 +16,6 @@ class MenuScene extends Phaser.Scene {
     const width = this.scale.width;
     const height = this.scale.height;
     const totalWidth = width * 3000;
-    console.log(totalWidth);
 
     const skyBg = this.add
       .image(width * 0.5, height * 0.5, "sky")
@@ -99,7 +98,6 @@ class MenuScene extends Phaser.Scene {
     muteButton.setInteractive();
 
     muteButton.on("pointerup", () => {
-      console.log("function works")
       try {
       if(playMusic) {
         playMusic= false
@@ -111,7 +109,6 @@ class MenuScene extends Phaser.Scene {
       .setDepth(1);
        muteButton.setScrollFactor(0);
        muteButton.setInteractive();
-        console.log(playMusic)
       }
     
       else {
@@ -124,9 +121,8 @@ class MenuScene extends Phaser.Scene {
         muteButton.setScrollFactor(0);
         muteButton.setInteractive();
          menumusic.play()
-        console.log(playMusic)
       } }catch(e)
-      {console.log(e)}     
+      {DEBUG(e)}     
     });
 
     playButton.on("pointerover", () => {
