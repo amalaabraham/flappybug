@@ -59,19 +59,7 @@ class MenuScene extends Phaser.Scene {
       .setDepth(1);
     playButton.setScrollFactor(0);
 
-    // playButton.setScale(0.8);
-    const menuButton = this.add
-      .image(
-        this.game.renderer.width / 2,
-        this.game.renderer.height / 2 + 100,
-        "options_button"
-      )
-      .setDepth(1);
-    menuButton.setScrollFactor(0);
-
-    menuButton.setScale(1.1);
     playButton.setInteractive();
-    menuButton.setInteractive();
 
 
     const multiplayButton = this.add
@@ -110,30 +98,16 @@ class MenuScene extends Phaser.Scene {
       animSprite.play("flap");
     });
 
-    menuButton.on("pointerout", () => {
-      animSprite.setVisible(false);
-    });
 
     playButton.on("pointerup", () => {
       this.sound.stopByKey('menu_audio');
       this.scene.start("GameScene", {tilesets: this.tilesets, isMultiplayer: false, hasPriority: -1} );
     });
 
-    menuButton.on("pointerover", () => {
-      animSprite.setVisible(true);
-      animSprite.x = menuButton.x - menuButton.width;
-      animSprite.y = menuButton.y;
-
-      animSprite.play("flap");
-    });
-
     playButton.on("pointerout", () => {
       animSprite.setVisible(false);
     });
 
-    menuButton.on("pointerup", () => {
-      //   todo
-    });
   }
 
   update() {

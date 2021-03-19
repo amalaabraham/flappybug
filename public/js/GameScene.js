@@ -185,7 +185,7 @@ class GameScene extends Phaser.Scene {
         socket.on('collision', _ => {
             this.opponentHasLost = true
             this.opponentBug.player.destroy()
-            this.opponentScoreLabel.setText(`Lost sc: ${this.opponentScore}`)
+            this.opponentScoreLabel.setText(`Lost: ${this.opponentScore}`)
         })
 
         this.opponentScoreLabel = this.add
