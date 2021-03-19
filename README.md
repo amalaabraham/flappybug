@@ -1,10 +1,6 @@
 [![Build Status](https://github.com/amalaabraham/flappybug/actions/workflows/node.js.yml/badge.svg)]
 [![Website shields.io](https://img.shields.io/github/issues/amalaabraham/flappybug?style=flat-square)]
-<<<<<<< HEAD
 [![GitHub license](https://img.shields.io/github/license/amalaabraham/flappybug?style=flat-square)](./LICENSE.md)
-=======
-[![GitHub license](https://img.shields.io/github/license/amalaabraham/flappybug?style=flat-square)](https://github.com/amalaabraham/flappybug/blob/master/LICENSE)
->>>>>>> dd00daf90157913fc77f0afaf7b6859014f6bd8c
 
 # FlappyBug
 
