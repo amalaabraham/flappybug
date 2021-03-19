@@ -105,34 +105,33 @@ class MenuScene extends Phaser.Scene {
 
     muteButton.on("pointerup", () => {
       console.log("function works")
+      try {
       if(playMusic) {
         playMusic= false
         this.sound.stopByKey('menu_audio');
-      //    muteButton = this.add
-      //   .image(
-      //     this.game.renderer.width - 100,
-      //     this.game.renderer.height - 100,
-      //     "off"
-      // )
-      // .setDepth(1);
-      //  muteButton.setScrollFactor(0);
-      //  muteButton.setInteractive();
+         muteButton
+         .setTexture(  
+            "off"
+      )
+      .setDepth(1);
+       muteButton.setScrollFactor(0);
+       muteButton.setInteractive();
         console.log(playMusic)
       }
+    
       else {
         playMusic=true;
-        // muteButton = this.add
-        // .image(
-        // this.game.renderer.width - 100,
-        // this.game.renderer.height - 100,
-        // "on"
-        //  )
-        // .setDepth(1);
-        // muteButton.setScrollFactor(0);
-        // muteButton.setInteractive();
+        muteButton
+        .setTexture(
+              "on"
+         )
+        .setDepth(1);
+        muteButton.setScrollFactor(0);
+        muteButton.setInteractive();
          menumusic.play()
         console.log(playMusic)
-      }      
+      } }catch(e)
+      {console.log(e)}     
     });
 
     playButton.on("pointerover", () => {
