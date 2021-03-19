@@ -48,7 +48,10 @@ class GameScene extends Phaser.Scene {
     let audio_coin = this.sound.add("audio_coin", { loop: false });
     let gameover = this.sound.add("gameover_audio", { loop: false });
     let bg = this.sound.add("background_audio", { loop: true });
-    bg.play();
+
+    if(playMusic) {
+            bg.play();
+    }
     this.hasGameStarted = false // Game Started?
     this.game_over = false
     
@@ -135,6 +138,7 @@ class GameScene extends Phaser.Scene {
           this.stopGame() 
           bg.pause();
           gameover.play();
+          playMusic = true;
           this.scene.start("GameOverScene"); 
           socket.emit('collision', false)
         }
