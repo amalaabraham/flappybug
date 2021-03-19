@@ -1,3 +1,4 @@
+[![Build Status](https://github.com/amalaabraham/flappybug/actions/workflows/node.js.yml/badge.svg)]
 [![Website shields.io](https://img.shields.io/github/issues/amalaabraham/flappybug?style=flat-square)]
 [![GitHub license](https://img.shields.io/github/license/amalaabraham/flappybu?style=flat-square)]
 
