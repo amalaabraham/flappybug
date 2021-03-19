@@ -17,7 +17,7 @@ $(() => {
   var config = {
     width: gameWidth,
     height: gameHeight,
-    backgroundColor: 0x40eef2,
+    backgroundColor: 0x000,
     physics: {
       default: "arcade",
       arcade: {
