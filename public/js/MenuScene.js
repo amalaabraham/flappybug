@@ -89,6 +89,7 @@ class MenuScene extends Phaser.Scene {
       this.scene.start("WaitingScene", { tilesets: this.tilesets });
     });
 
+    if (playMusic){
     var muteButton = this.add
       .image(
         this.game.renderer.width - 100,
@@ -98,6 +99,19 @@ class MenuScene extends Phaser.Scene {
       .setDepth(1);
     muteButton.setScrollFactor(0);
     muteButton.setInteractive();
+      }
+
+    else {
+      var muteButton = this.add
+      .image(
+        this.game.renderer.width - 100,
+        this.game.renderer.height - 100,
+        "off"
+      )
+      .setDepth(1);
+    muteButton.setScrollFactor(0);
+    muteButton.setInteractive();
+    }
 
     muteButton.on("pointerup", () => {
       try {
