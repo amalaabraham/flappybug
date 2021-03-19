@@ -9,9 +9,8 @@ body{
 }
 
 nav{
-    padding: 0 0 15px 15px;
+    padding: 0 0 15px 7%;
     margin-left: 5px;
-    border-bottom: 1px white groove;
 }
 
 #nav-icon{
@@ -22,9 +21,9 @@ nav{
 }
 
 .nav-fb{
-    font-family: 'SOUTHSIDE', sans-serif;
-    letter-spacing: 4px;
-    font-size: 28px;
+    font-family: 'PS2P';
+    letter-spacing: 1px;
+    font-size: 20px;
     font-weight: bolder;
 }
 
@@ -37,7 +36,7 @@ nav{
 }
 
 .nav-fb-holder{
-    padding-top: 10px;
+    padding-top: 15px;
 }
 canvas{
     position: absolute;
