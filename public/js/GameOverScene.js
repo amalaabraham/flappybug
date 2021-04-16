@@ -8,7 +8,7 @@ class GameOverScene extends Phaser.Scene {
   init(score) {
     this.score = score;
   }
-  create() {
+  create(data) {
     let label = this.add.text(gameWidth / 2, gameHeight / 2, "Game Over!", {
       fontSize: "50px",
       fontFamily: "PS2P",
@@ -32,7 +32,7 @@ class GameOverScene extends Phaser.Scene {
     console.log(typeof this.score);
     if (typeof this.score === "number") {
       const scoreLabel = this.add
-        .text(gameWidth / 2, gameHeight / 1.5, `Score: ${this.score}`, {
+        .text(gameWidth / 3, gameHeight / 1.5, `Your Score: ${this.score}`, {
           fontSize: "15px",
           fontFamily: "PS2P",
           align: "center",

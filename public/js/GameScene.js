@@ -16,7 +16,6 @@ class GameScene extends Phaser.Scene {
     // scoring
     this.scoreLabel = null;
     this.score = 0;
-
     // multiplayer part
     this.isMultiplayer = false;
     this.hasPriority = false;
@@ -145,7 +144,7 @@ class GameScene extends Phaser.Scene {
           if (playMusic) {
             gameover.play();
           }
-          this.scene.start("GameOverScene");
+          this.scene.start("GameOverScene", this.score);
           socket.emit("collision", false);
         }
       }
