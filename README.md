@@ -4,8 +4,23 @@
 
 # FlappyBug
 
-FlappyBug is Multiplayer version of the classic FlappyBird Game.
+**FlappyBug** is Multiplayer version of the classic FlappyBird Game. Though inspired by the FlappyBird game, FlappyBug has got a magnificent interface, where the player collects the assets and on collision, it dies. Players can play alone or with any other random player. In the multiplayer version, the one who collects maximum assets win the game.
+
+### Features
+
+- A smooth background music that motivates to fly more and capture more stars.
+- Balancing breathtaking visuals and charming aesthetic features with seamless navigation.
+- A landing page with how to play and team description.
+
 ![Flappy Bug Game Image](./fb_ss.png)
+
+### Tech Stack
+
+- Phaser.js (JS Framework for Game Development)
+- HTML,CSS
+- Socket.io with Nodejs for the multiplayer connection.
+- Heroku for Deployment
+
 
 # Contribution:
 
