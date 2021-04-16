@@ -15,7 +15,9 @@ class GameScene extends Phaser.Scene {
 
     // scoring
     this.scoreLabel = null;
+    this.highScoreLabel = null;
     this.score = 0;
+    this.highScore = this.score;
     // multiplayer part
     this.isMultiplayer = false;
     this.hasPriority = false;
@@ -135,6 +137,9 @@ class GameScene extends Phaser.Scene {
           socket.emit("score", this.score);
 
           this.scoreLabel.setText(`Score: ${this.score}`);
+          if (this.score > localStorage.getItem("flappyhighscore")) {
+            this.highScoreLabel.setText(`High Score: ${this.score}`);
+          }
         } else if (_obj.texture.key == "Sign_01") {
           // not collidable
         } else {
@@ -143,6 +148,11 @@ class GameScene extends Phaser.Scene {
           bg.pause();
           if (playMusic) {
             gameover.play();
+          }
+          // setting high score in localstorage
+          this.highScore = this.score;
+          if (this.score > localStorage.getItem("flappyhighscore")) {
+            localStorage.setItem("flappyhighscore", this.score);
           }
           this.scene.start("GameOverScene", this.score);
           socket.emit("collision", false);
@@ -154,8 +164,21 @@ class GameScene extends Phaser.Scene {
       .text(10, 10, "Score: 0", {
         fontSize: "20px",
         fontFamily: "PS2P",
-        fill: "yellow",
+        fill: "blue",
       })
+      .setScrollFactor(0);
+
+    this.highScoreLabel = this.add
+      .text(
+        10,
+        40,
+        `High Score: ${localStorage.getItem("flappyhighscore") || 0}`,
+        {
+          fontSize: "20px",
+          fontFamily: "PS2P",
+          fill: "blue",
+        }
+      )
       .setScrollFactor(0);
 
     const cam = this.cameras.main;

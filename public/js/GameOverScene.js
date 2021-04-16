@@ -13,7 +13,7 @@ class GameOverScene extends Phaser.Scene {
       fontSize: "50px",
       fontFamily: "PS2P",
       align: "center",
-      fill: "#fff",
+      fill: "blue",
     });
     label.setOrigin(0.5, 0.5);
     this.showRetryAndScore();
@@ -32,12 +32,19 @@ class GameOverScene extends Phaser.Scene {
     console.log(typeof this.score);
     if (typeof this.score === "number") {
       const scoreLabel = this.add
-        .text(gameWidth / 3, gameHeight / 1.5, `Your Score: ${this.score}`, {
-          fontSize: "15px",
-          fontFamily: "PS2P",
-          align: "center",
-          fill: "#fff",
-        })
+        .text(
+          gameWidth / 3.5,
+          gameHeight / 1.5,
+          `Your Score: ${this.score}  High Score: ${localStorage.getItem(
+            "flappyhighscore"
+          )}`,
+          {
+            fontSize: "15px",
+            fontFamily: "PS2P",
+            align: "center",
+            fill: "#fff",
+          }
+        )
         .setDepth(1);
     }
 
