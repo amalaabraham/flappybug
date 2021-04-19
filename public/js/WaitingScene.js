@@ -16,18 +16,13 @@ class WaitingScene extends Phaser.Scene {
       gameWidth / 2,
       gameHeight / 2,
       "Waiting for an opponent...",
-      { fontSize: "20px", fontFamily: "PS2P", align: "center", fill: "#fff" }
+      Label0Css("20px", "#fff")
     );
     label.setOrigin(0.5, 0.5);
     socket.emit("waiting", true);
 
     let backLabel = this.add
-      .text(10, gameHeight - 30, "<- Back", {
-        fontSize: "15px",
-        fontFamily: "PS2P",
-        align: "center",
-        fill: "#fff",
-      })
+      .text(10, gameHeight - 30, "<- Back", Label0Css("15px", "#fff"))
       .setDepth(1);
     backLabel.setInteractive({ useHandCursor: true });
 

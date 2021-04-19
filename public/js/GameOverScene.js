@@ -9,24 +9,14 @@ class GameOverScene extends Phaser.Scene {
     this.score = score;
   }
   create(data) {
-    let label = this.add.text(gameWidth / 2, gameHeight / 2, "Game Over!", {
-      fontSize: "50px",
-      fontFamily: "PS2P",
-      align: "center",
-      fill: "blue",
-    });
+    let label = this.add.text(gameWidth / 2, gameHeight / 2, "Game Over!", Label0Css("50px", "blue"));
     label.setOrigin(0.5, 0.5);
     this.showRetryAndScore();
   }
 
   showRetryAndScore() {
     let backLabel = this.add
-      .text(10, gameHeight - 30, "<- Retry", {
-        fontSize: "15px",
-        fontFamily: "PS2P",
-        align: "center",
-        fill: "#fff",
-      })
+      .text(10, gameHeight - 30, "<- Retry", Label0Css("15px", "#fff"))
       .setDepth(1);
     backLabel.setInteractive({ useHandCursor: true });
     DEBUG(typeof this.score);
@@ -38,12 +28,7 @@ class GameOverScene extends Phaser.Scene {
           `Your Score: ${this.score}  High Score: ${localStorage.getItem(
             "flappyhighscore"
           )}`,
-          {
-            fontSize: "15px",
-            fontFamily: "PS2P",
-            align: "center",
-            fill: "#fff",
-          }
+          Label0Css("15px", "#fff")
         )
         .setDepth(1);
     }

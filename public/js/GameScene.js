@@ -161,11 +161,7 @@ class GameScene extends Phaser.Scene {
     );
 
     this.scoreLabel = this.add
-      .text(10, 10, "Score: 0", {
-        fontSize: "20px",
-        fontFamily: "PS2P",
-        fill: "blue",
-      })
+      .text(10, 10, "Score: 0", Label0Css("20px", "blue", "left"))
       .setScrollFactor(0);
 
     this.highScoreLabel = this.add
@@ -173,11 +169,7 @@ class GameScene extends Phaser.Scene {
         10,
         40,
         `High Score: ${localStorage.getItem("flappyhighscore") || 0}`,
-        {
-          fontSize: "20px",
-          fontFamily: "PS2P",
-          fill: "blue",
-        }
+        Label0Css("20px", "blue", "left")
       )
       .setScrollFactor(0);
 
@@ -185,12 +177,7 @@ class GameScene extends Phaser.Scene {
     cam.startFollow(this.bug.player);
 
     if (this.isMultiplayer) {
-      this.countingLabel = this.add.text(gameWidth / 2, gameHeight / 2, `3`, {
-        fontSize: "20px",
-        fontFamily: "PS2P",
-        align: "center",
-        fill: "#fff",
-      });
+      this.countingLabel = this.add.text(gameWidth / 2, gameHeight / 2, `3`, Label0Css("20px", "#fff"));
 
       this.timer = setInterval(() => {
         this.counter--;
@@ -217,11 +204,7 @@ class GameScene extends Phaser.Scene {
       });
 
       this.opponentScoreLabel = this.add
-        .text(10, 40, "Opp Score: 0", {
-          fontSize: "20px",
-          fontFamily: "PS2P",
-          fill: "red",
-        })
+        .text(10, 40, "Opp Score: 0", Label0Css("20px", "red", "left"))
         .setScrollFactor(0);
     }
   }
