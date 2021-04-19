@@ -4,7 +4,7 @@ var gameHeight, gameWidth;
 var playMusic = true;
 
 var DEBUG = (err) => {
-  if (doDebug) console.log(err);
+  if (doDebug) DEBUG(err);
 };
 
 $(() => {

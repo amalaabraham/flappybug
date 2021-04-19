@@ -29,7 +29,7 @@ class GameOverScene extends Phaser.Scene {
       })
       .setDepth(1);
     backLabel.setInteractive({ useHandCursor: true });
-    console.log(typeof this.score);
+    DEBUG(typeof this.score);
     if (typeof this.score === "number") {
       const scoreLabel = this.add
         .text(
