@@ -1,19 +1,19 @@
 var BugConfig = {
-  jumpVelocity: -400,
-  gravityVelocity: 200,
-  gravityAngularVelocity: 80,
-  jumpAngularVelocity: -160,
+  jumpVelocity: -400, // when jumping add up-acceleration
+  gravityVelocity: 200, // bug is always falling down
+  gravityAngularVelocity: 80, // bug when falling down rolls clock-wise for better effect
+  jumpAngularVelocity: -160, // when bug jumps -> bug rotate left for effect
 };
 
 class Bug {
   constructor(scene, gameWidth, gameHeight, hasPriority, isOpponent) {
-    this.scene = scene;
-    this.gameWidth = gameWidth;
-    this.gameHeight = gameHeight;
-    this.player = null;
-    this.hasGameStarted = false;
-    this.hasPriority = hasPriority;
-    this.isOpponent = isOpponent;
+    this.scene = scene; // init scene
+    this.gameWidth = gameWidth; // init game Width
+    this.gameHeight = gameHeight; // init game Height
+    this.player = null; // phaser sprite
+    this.hasGameStarted = false; // did the game start
+    this.hasPriority = hasPriority; // true if first to waiting room (on multiplay)
+    this.isOpponent = isOpponent; // got an opponent ? multiplay mode ?
   }
 
   render() {
@@ -32,11 +32,13 @@ class Bug {
       return this;
     }
 
+    // create player's Bug
     this.player = this.scene.physics.add.sprite(
       Math.floor(gameWidth / 2),
       bugY,
       "bug"
     );
+
     return this;
   }
 
@@ -44,7 +46,7 @@ class Bug {
     this.player.body.velocity.y = BugConfig.gravityVelocity;
     this.player.body.angularVelocity = BugConfig.gravityAngularVelocity;
     this.player.body.allowRotation = true;
-    this.player.body.velocity.x = 240;
+    this.player.body.velocity.x = 240; // always moving forward
   }
 
   startGame() {
@@ -56,6 +58,7 @@ class Bug {
   stopGame() {
     this.hasGameStarted = false;
     this.player.enableRotation = false;
+    // reset accelerations
     this.player.body.velocity.y = 0;
     this.player.body.angularVelocity = 0;
   }
@@ -66,7 +69,7 @@ class Bug {
     this.player.body.velocity.y = BugConfig.jumpVelocity;
     this.player.body.angularVelocity = BugConfig.jumpAngularVelocity;
 
-    setTimeout(() => {
+    setTimeout(() => { // reset jump velocities after some time
       if (!this.hasGameStarted) return;
       this.player.body.velocity.y = BugConfig.gravityVelocity;
       this.player.body.angularVelocity = BugConfig.gravityAngularVelocity;
@@ -101,12 +104,12 @@ class Bug {
 
     let y = this.player.body.y;
 
-    let bottomLimit = 100;
+    let bottomLimit = 100; // bottom limit to implement game edge collisions
 
-    if (y < 0) this.player.body.y = 0;
+    if (y < 0) this.player.body.y = 0; // top-collisions
 
     if (y > gameHeight - bottomLimit)
-      this.player.body.y = gameHeight - bottomLimit;
+      this.player.body.y = gameHeight - bottomLimit; // can't sink below game edges
   }
 
   alertOponentOfJump() {

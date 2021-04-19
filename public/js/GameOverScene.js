@@ -9,7 +9,7 @@ class GameOverScene extends Phaser.Scene {
     this.score = score;
   }
   create(data) {
-    let label = this.add.text(gameWidth / 2, gameHeight / 2, "Game Over!", Label0Css("50px", "blue"));
+    let label = this.add.text(gameWidth / 2, gameHeight / 2, "Game Over!", Label0Css("50px", "blue")); // Game Over Label
     label.setOrigin(0.5, 0.5);
     this.showRetryAndScore();
   }
@@ -33,7 +33,7 @@ class GameOverScene extends Phaser.Scene {
         .setDepth(1);
     }
 
-    backLabel.on("pointerup", () => {
+    backLabel.on("pointerup", () => { // go back upon click
       this.scene.start("MenuScene");
     });
   }

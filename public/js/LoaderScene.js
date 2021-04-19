@@ -62,38 +62,29 @@ class LoadingScene extends Phaser.Scene {
     var progressBar = this.add.graphics();
     var progressBox = this.add.graphics();
 
-    var loadingText = this.make.text({
+    var loadingText = this.make.text({ // create Loading... on screen top center
       x: gameWidth / 2,
       y: gameHeight / 2 - 50,
       text: "Loading...",
-      style: {
-        font: "30px monospace",
-        fill: "#ffffff",
-      },
+      style: Label1Css("30px", "#fff"),
     });
 
     loadingText.setOrigin(0.5, 0.5);
 
-    var ratioText = this.make.text({
+    var ratioText = this.make.text({ // % progression Label
       x: gameWidth / 2,
       y: gameHeight / 2 + 30,
       text: "0%",
-      style: {
-        font: "20px monospace",
-        fill: "#ffffff",
-      },
+      style: Label1Css("20px", "#fff"),
     });
 
-    ratioText.setOrigin(0.5, 0.5);
+    ratioText.setOrigin(0.5, 0.5); // anchor at center
 
     var assetLoadingText = this.make.text({
       x: 10,
       y: gameHeight - 20,
       text: "Loading Assest: bug.png",
-      style: {
-        font: "10px monospace",
-        fill: "#ffffff",
-      },
+      style: Label1Css("10px", "#fff"),
     });
 
     progressBox.fillStyle(0xffffff, 0.2);
@@ -131,7 +122,7 @@ class LoadingScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start("MenuScene", { tilesets: this.tilesets });
+    this.scene.start("MenuScene", { tilesets: this.tilesets }); // launch Menu Scene
   }
 
   loadTilesets() {
@@ -139,9 +130,11 @@ class LoadingScene extends Phaser.Scene {
       url: "../game/fp-env.json",
       dataType: "json",
       async: false,
-    }).responseJSON;
-    let tilesets = json["tilesets"];
-    this.tilesets = tilesets.map((item) => {
+    }).responseJSON; // async get the tilemap json
+
+    let tilesets = json["tilesets"]; // get tilesets
+
+    this.tilesets = tilesets.map((item) => { // format 
       return {
         image: "../game/" + item.image,
         gid: item.firstgid,

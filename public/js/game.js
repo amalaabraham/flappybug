@@ -1,4 +1,4 @@
-var doDebug = false;
+var doDebug = false; // show debug messages ?
 var gameHeight, gameWidth;
 
 var playMusic = true;
@@ -28,5 +28,5 @@ $(() => {
     scene: [LoadingScene, MenuScene, WaitingScene, GameScene, GameOverScene],
   };
 
-  game = new Phaser.Game(config);
+  game = new Phaser.Game(config); // create new phaser arcade game
 });
