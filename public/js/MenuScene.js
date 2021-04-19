@@ -74,18 +74,18 @@ class MenuScene extends Phaser.Scene {
 
     multiplayButton.setScrollFactor(0);
 
-    multiplayButton.on("pointerover", () => {
+    multiplayButton.on("pointerover", () => { // show hover effect
       animSprite.setVisible(true);
       animSprite.x = multiplayButton.x - multiplayButton.width / 2 - 10;
       animSprite.y = multiplayButton.y;
       animSprite.play("flap");
     });
 
-    multiplayButton.on("pointerout", () => {
+    multiplayButton.on("pointerout", () => { // hide hover effect
       animSprite.setVisible(false);
     });
 
-    multiplayButton.on("pointerup", () => {
+    multiplayButton.on("pointerup", () => { // get to the waiting Scene when clicking Multiplay
       this.scene.start("WaitingScene", { tilesets: this.tilesets });
     });
 
@@ -111,7 +111,7 @@ class MenuScene extends Phaser.Scene {
       muteButton.setInteractive();
     }
 
-    muteButton.on("pointerup", () => {
+    muteButton.on("pointerup", () => { // stop all playing sounds when muting
       try {
         if (playMusic) {
           playMusic = false;
@@ -131,23 +131,23 @@ class MenuScene extends Phaser.Scene {
       }
     });
 
-    playButton.on("pointerover", () => {
+    playButton.on("pointerover", () => { // show hover effect
       animSprite.setVisible(true);
       animSprite.x = playButton.x - playButton.width;
       animSprite.y = playButton.y;
       animSprite.play("flap");
     });
 
-    playButton.on("pointerup", () => {
+    playButton.on("pointerup", () => { // start sungke game
       this.sound.stopByKey("menu_audio");
-      this.scene.start("GameScene", {
+      this.scene.start("GameScene", { // get to game scene on single play
         tilesets: this.tilesets,
         isMultiplayer: false,
         hasPriority: -1,
       });
     });
 
-    playButton.on("pointerout", () => {
+    playButton.on("pointerout", () => { // hide hover effect
       animSprite.setVisible(false);
     });
   }
